@@ -1,0 +1,39 @@
+<html>
+  <head>
+    <style>
+      dialog {
+        position: absolute;
+        width: 80%;
+        height: 50%;
+        top: 0;
+        left: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>My page</h1>
+    <p id="main">
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
+      tempor incididunt ut labore et dolore magna aliqua. Hac habitasse platea
+      dictumst vestibulum rhoncus est pellentesque elit ullamcorper. Scelerisque
+      fermentum dui faucibus in ornare. Suspendisse potenti nullam ac tortor
+      vitae purus. Porta lorem mollis aliquam ut. Nunc sed augue lacus viverra
+      vitae congue eu consequat. Consequat id porta nibh venenatis cras sed.
+      Gravida quis blandit turpis cursus in hac habitasse. Felis eget nunc
+      lobortis mattis. Ac odio tempor orci dapibus. Est pellentesque elit
+      ullamcorper dignissim cras. Mollis nunc sed id semper risus in hendrerit.
+      Vulputate sapien nec sagittis aliquam malesuada bibendum arcu. Et netus et
+      malesuada fames ac turpis egestas.
+    </p>
+    <dialog id="survey">
+      <h1>Take a survey!</h1>
+      <form method="dialog"><button>Close</button></form>
+    </dialog>
+    <script>
+      // sometimes show the survey dialog
+      if (Math.random() < 0.5) {
+        document.getElementById('survey').setAttribute('open', 'open')
+      }
+    </script>
+  </body>
+</html>

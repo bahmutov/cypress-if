@@ -1,65 +1,6 @@
-Cypress.Commands.add(
-  'if',
-  { prevSubject: true },
-  function (subject, assertion) {
-    const cmd = cy.state('current')
-    console.log('if', cmd.attributes, 'subject', subject)
-    console.log('next command', cmd.next)
+/// <reference types="cypress" />
 
-    const hasSubject = Boolean(subject)
-    let assertionsPassed = true
-    if (hasSubject && assertion) {
-      try {
-        expect(subject).to.be[assertion]
-      } catch (e) {
-        console.error(e)
-        assertionsPassed = false
-      }
-    }
-
-    if (!hasSubject || !assertionsPassed) {
-      if (cmd.attributes.next) {
-        console.log(
-          'skipping the next command',
-          cmd.attributes.next.attributes.name,
-        )
-        cmd.attributes.next.attributes.skip = true
-        cy.log(`**skipping ${cmd.attributes.next.attributes.name}**`)
-        if (subject) {
-          cy.wrap(subject)
-        }
-        return
-      }
-    }
-    return subject
-  },
-)
-
-Cypress.Commands.overwrite('get', function (get, selector) {
-  // can we see the next command already?
-  const cmd = cy.state('current')
-  console.log(cmd)
-  const next = cmd.attributes.next
-  if (next && next.attributes.name === 'if') {
-    // disable the built-in assertion
-    return get(selector).then(
-      (getResult) => {
-        console.log('internal get result', getResult)
-        return getResult
-      },
-      (noResult) => {
-        console.log('no get result', noResult)
-        debugger
-      },
-    )
-  }
-  return get(selector)
-})
-
-Cypress.Commands.overwrite('click', function (click, subject) {
-  console.log('my click', subject)
-  return click(subject)
-})
+import '../../src'
 
 it('finds the li elements', () => {
   cy.visit('index.html')
