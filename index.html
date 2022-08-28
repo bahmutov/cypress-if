@@ -1,8 +1,23 @@
-<body>
-  <ul id="fruits">
-    <li>Apples</li>
-    <li>Grapes</li>
-    <li>Kiwi</li>
-  </ul>
-  <button id="load">Load</button>
-</body>
+<html>
+  <head>
+    <style>
+      #hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <ul id="fruits">
+      <li>Apples</li>
+      <li>Grapes</li>
+      <li>Kiwi</li>
+    </ul>
+    <button id="load">Load</button>
+    <button id="hidden">Cannot see me</button>
+    <script>
+      document.getElementById('hidden').addEventListener('click', () => {
+        throw new Error('Clicked on invisible button')
+      })
+    </script>
+  </body>
+</html>
