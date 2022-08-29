@@ -1,4 +1,4 @@
-# cypress-if ![cypress version](https://img.shields.io/badge/cypress-10.6.0-brightgreen)
+# cypress-if ![cypress version](https://img.shields.io/badge/cypress-10.6.0-brightgreen) [![ci](https://github.com/bahmutov/cypress-if/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/bahmutov/cypress-if/actions/workflows/ci.yml)
 
 **DO NOT USE YET**
 
