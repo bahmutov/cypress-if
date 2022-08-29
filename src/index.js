@@ -1,10 +1,12 @@
+const debug = require('debug')('cypress-if')
+
 Cypress.Commands.add(
   'if',
   { prevSubject: true },
   function (subject, assertion) {
     const cmd = cy.state('current')
-    console.log('if', cmd.attributes, 'subject', subject)
-    console.log('next command', cmd.next)
+    debug('if', cmd.attributes, 'subject', subject)
+    debug('next command', cmd.next)
 
     const hasSubject = Boolean(subject)
     let assertionsPassed = true
@@ -20,19 +22,19 @@ Cypress.Commands.add(
     if (!hasSubject || !assertionsPassed) {
       let nextCommand = cmd.attributes.next
       while (nextCommand) {
-        console.log(
+        debug(
           'skipping the next "%s" command "%s"',
           nextCommand.attributes.type,
           nextCommand.attributes.name,
         )
         // cy.log(`**skipping ${cmd.attributes.next.attributes.name}**`)
-        console.log('skipping "%s"', nextCommand.attributes.name)
-        console.log(nextCommand.attributes)
+        debug('skipping "%s"', nextCommand.attributes.name)
+        debug(nextCommand.attributes)
         nextCommand.attributes.skip = true
 
         nextCommand = nextCommand.attributes.next
         if (nextCommand && nextCommand.attributes.type === 'parent') {
-          console.log(
+          debug(
             'stop skipping commands, see a parent command "%s"',
             nextCommand.attributes.name,
           )
@@ -52,27 +54,21 @@ Cypress.Commands.add(
 Cypress.Commands.overwrite('get', function (get, selector) {
   // can we see the next command already?
   const cmd = cy.state('current')
-  console.log(cmd)
+  debug(cmd)
   const next = cmd.attributes.next
 
   if (next && next.attributes.name === 'if') {
     // disable the built-in assertion
     return get(selector).then(
       (getResult) => {
-        console.log('internal get result', getResult)
+        debug('internal get result', getResult)
         return getResult
       },
       (noResult) => {
-        console.log('no get result', noResult)
-        debugger
+        debug('no get result', noResult)
       },
     )
   }
 
   return get(selector)
 })
-
-// Cypress.Commands.overwrite('click', function (click, subject) {
-//   console.log('my click', subject)
-//   return click(subject)
-// })
