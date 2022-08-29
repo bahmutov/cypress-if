@@ -2,6 +2,8 @@
 
 **DO NOT USE YET**
 
+Tested with `cy.get`, `cy.contains` commands
+
 ## Install
 
 Add this package as a dev dependency
@@ -51,6 +53,10 @@ localStorage.debug = 'cypress-if'
 If you re-run the tests, you should see the messages appear in the console
 
 ![Debug messages in the console](./img/debug.png)
+
+## See also
+
+- [cypress-ngx-ui-testing](https://github.com/swimlane/ngx-ui/tree/master/projects/swimlane/ngx-ui-testing)
 
 ## Small print
 
