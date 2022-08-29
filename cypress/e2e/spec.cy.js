@@ -3,7 +3,7 @@
 import '../../src'
 
 it('finds the li elements', () => {
-  cy.visit('index.html')
+  cy.visit('cypress/index.html')
   // if the list exists, it should have three items
   cy.get('#fruits li').if().should('have.length', 3)
   // if the list exists, it should have three items
@@ -16,7 +16,7 @@ it('finds the li elements', () => {
 })
 
 it('clicks on the button if it is visible', () => {
-  cy.visit('index.html')
+  cy.visit('cypress/index.html')
   cy.get('button#hidden').if('visible').click()
   // but we can click on the visible button
   cy.get('button#load').if('visible').click()

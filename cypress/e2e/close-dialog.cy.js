@@ -5,7 +5,7 @@ it(
   'closes the survey dialog if it is open',
   { viewportWidth: 500, viewportHeight: 500 },
   () => {
-    cy.visit('close-dialog.html')
+    cy.visit('cypress/close-dialog.html')
     cy.get('dialog#survey')
       .if('visible')
       .wait(1000)
