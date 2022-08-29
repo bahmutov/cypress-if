@@ -1,14 +1,20 @@
 {
   "name": "cypress-if",
   "version": "1.0.0",
-  "description": "",
+  "description": "Custom cypress cy.if command experiment",
   "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cypress run",
+    "badges": "npx -p dependency-version-badge update-badge cypress"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "files": [
+    "src"
+  ],
+  "keywords": [
+    "cypress-plugin"
+  ],
+  "author": "Gleb Bahmutov <gleb.bahmutov@gmail.com>",
+  "license": "MIT",
   "devDependencies": {
     "cypress": "^10.6.0",
     "prettier": "^2.7.1"
