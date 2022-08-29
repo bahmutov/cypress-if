@@ -40,6 +40,18 @@ If the dialog was invisible, the visibility assertion fails, and the rest of the
 
 ![Dialog was closed](./img/dialog-closed.png)
 
+## Debugging
+
+This module uses [debug](https://github.com/debug-js/debug#readme) module to output verbose browser console messages when needed. To turn the logging on, open the browser's DevTools console and set the local storage entry:
+
+```js
+localStorage.debug = 'cypress-if'
+```
+
+If you re-run the tests, you should see the messages appear in the console
+
+![Debug messages in the console](./img/debug.png)
+
 ## Small print
 
 Author: Gleb Bahmutov &lt;gleb.bahmutov@gmail.com&gt; &copy; 2022
