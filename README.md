@@ -66,6 +66,17 @@ cy.contains('Accept cookies')
   .log('no cookie banner')
 ```
 
+The subject from the `.if()` command will be passed to the `.else()` chain, this allows you to work with the original element:
+
+```js
+cy.get('#enrolled')
+  .if('checked')
+  .log('**already enrolled**')
+  // the checkbox should be passed into .else()
+  .else()
+  .check()
+```
+
 ## Debugging
 
 This module uses [debug](https://github.com/debug-js/debug#readme) module to output verbose browser console messages when needed. To turn the logging on, open the browser's DevTools console and set the local storage entry:

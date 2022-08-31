@@ -39,7 +39,7 @@ describe('checkbox', () => {
       cy.get('#enrolled').should('be.checked')
     })
 
-    it.skip('passes the subject to the else() branch', () => {
+    it('passes the subject to the else() branch', () => {
       cy.visit('cypress/checkbox.html')
       cy.get('#enrolled')
         .if('checked')
