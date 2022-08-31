@@ -1,16 +1,10 @@
 const debug = require('debug')('cypress-if')
 
-function skipRestOfTheChain(cmd) {
-  while (cmd) {
-    if (cmd.attributes.type === 'parent' && cmd.attributes.name !== 'log') {
-      // stop checking because found new chain
-      debug('found parent command "%s"', cmd.attributes.name)
-      cmd = null
-    } else {
-      debug('skipping "%s"', cmd.attributes.name)
-      cmd.attributes.skip = true
-      cmd = cmd.attributes.next
-    }
+function skipRestOfTheChain(cmd, chainerId) {
+  while (cmd && cmd.attributes.chainerId === chainerId) {
+    debug('skipping "%s"', cmd.attributes.name)
+    cmd.attributes.skip = true
+    cmd = cmd.attributes.next
   }
 }
 
@@ -100,25 +94,18 @@ Cypress.Commands.add(
       // skip possible "else" branch
       debug('skipping a possible "else" branch')
       let nextCommand = cmd.attributes.next
-      while (nextCommand) {
+      while (nextCommand && nextCommand.attributes.chainerId === chainerId) {
         debug(
           'next command "%s" type "%s"',
           nextCommand.attributes.name,
           nextCommand.attributes.type,
           nextCommand.attributes,
         )
-        if (nextCommand.attributes.type === 'parent') {
-          // ignore the "cy.log" - even if it is a parent
-          if (nextCommand.attributes.name !== 'log') {
-            // stop checking because found new chain
-            nextCommand = null
-          } else {
-            nextCommand = nextCommand.attributes.next
-          }
-        } else if (nextCommand.attributes.name === 'else') {
+
+        if (nextCommand.attributes.name === 'else') {
           // found the "else" command, start skipping
           debug('found the "else" branch command start')
-          skipRestOfTheChain(nextCommand)
+          skipRestOfTheChain(nextCommand, chainerId)
           nextCommand = null
         } else {
           nextCommand = nextCommand.attributes.next

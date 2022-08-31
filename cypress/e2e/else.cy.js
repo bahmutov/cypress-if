@@ -38,6 +38,35 @@ describe('else branch', () => {
       cy.get('@else').should('not.be.called')
     })
 
+    it('skips the entire ELSE chain', () => {
+      cy.visit('cypress/index.html')
+      cy.get('#load')
+        .if()
+        .log('found it')
+        .get('#load')
+        .click()
+        .else()
+        .log('ughh, why execute the else branch')
+        .then(() => {
+          throw new Error('no!!!')
+        })
+    })
+
+    it('skips the entire ELSE chain even if it has parent commands', () => {
+      cy.visit('cypress/index.html')
+      cy.get('#load')
+        .if()
+        .log('found it')
+        .get('#load')
+        .click()
+        .else()
+        .get('#load')
+        .log('ughh, why execute the else branch after a parent command')
+        .then(() => {
+          throw new Error('no!!!')
+        })
+    })
+
     it('calls actions in the else branch', () => {
       cy.wrap(42)
         .if('equal', 1)
