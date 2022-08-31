@@ -12,4 +12,42 @@ describe('checkbox', () => {
     cy.visit('cypress/checkbox.html')
     cy.get('#agreed').if('not.checked').check()
   })
+
+  context('with else() branches', () => {
+    it('logs a message when nothing to check', () => {
+      cy.visit('cypress/checkbox.html')
+      cy.get('#agreed')
+        .if('not.checked')
+        .check()
+        .else()
+        .log('**already agreed**')
+    })
+
+    it('handles if().else() short chain', () => {
+      cy.visit('cypress/checkbox.html')
+      cy.get('#enrolled').if('checked').else().check()
+      cy.get('#enrolled').should('be.checked')
+    })
+
+    it('checks the button if not checked', () => {
+      cy.visit('cypress/checkbox.html')
+      cy.get('#enrolled')
+        .if('checked')
+        // .log('**already enrolled**')
+        .else()
+        .check()
+      cy.get('#enrolled').should('be.checked')
+    })
+
+    it.skip('passes the subject to the else() branch', () => {
+      cy.visit('cypress/checkbox.html')
+      cy.get('#enrolled')
+        .if('checked')
+        .log('**already enrolled**')
+        // the checkbox should be passed into .else()
+        .else()
+        .check()
+      cy.get('#enrolled').should('be.checked')
+    })
+  })
 })

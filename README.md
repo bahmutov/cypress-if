@@ -54,6 +54,18 @@ You can use assertions with `not`
 cy.get('#enrolled').if('not.checked').check()
 ```
 
+## else command
+
+You can chain `.else()` command that is only executed if the `.if()` is skipped.
+
+```js
+cy.contains('Accept cookies')
+  .if('visible')
+  .click()
+  .else()
+  .log('no cookie banner')
+```
+
 ## Debugging
 
 This module uses [debug](https://github.com/debug-js/debug#readme) module to output verbose browser console messages when needed. To turn the logging on, open the browser's DevTools console and set the local storage entry:
