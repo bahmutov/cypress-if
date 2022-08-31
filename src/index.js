@@ -3,7 +3,7 @@ const debug = require('debug')('cypress-if')
 Cypress.Commands.add(
   'if',
   { prevSubject: true },
-  function (subject, assertion) {
+  function (subject, assertion, assertionValue) {
     const cmd = cy.state('current')
     debug('if', cmd.attributes, 'subject', subject, 'assertion?', assertion)
     debug('next command', cmd.next)
@@ -19,7 +19,11 @@ Cypress.Commands.add(
             assertionReduced = assertionReduced[assertionPart]
           })
         } else {
-          expect(subject).to.be[assertion]
+          if (typeof assertionValue !== 'undefined') {
+            expect(subject).to.be[assertion](assertionValue)
+          } else {
+            expect(subject).to.be[assertion]
+          }
         }
       } catch (e) {
         console.error(e)

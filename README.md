@@ -42,6 +42,18 @@ If the dialog was invisible, the visibility assertion fails, and the rest of the
 
 ![Dialog was closed](./img/dialog-closed.png)
 
+You can use assertions with arguments
+
+```js
+cy.wrap(42).if('equal', 42)...
+```
+
+You can use assertions with `not`
+
+```js
+cy.get('#enrolled').if('not.checked').check()
+```
+
 ## Debugging
 
 This module uses [debug](https://github.com/debug-js/debug#readme) module to output verbose browser console messages when needed. To turn the logging on, open the browser's DevTools console and set the local storage entry:
