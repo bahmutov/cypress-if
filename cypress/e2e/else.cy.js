@@ -1,4 +1,5 @@
 /// <reference types="cypress" />
+// @ts-check
 
 import '../../src'
 
@@ -20,6 +21,10 @@ describe('else branch', () => {
       .log('is 3')
       .if('equal', 1)
       .log('is 1')
+  })
+
+  it('attaches should', () => {
+    cy.wrap(1).if('equal', 1).should('equal', 1).else().should('equal', 2)
   })
 
   context('with checks', () => {

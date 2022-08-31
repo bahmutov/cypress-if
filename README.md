@@ -20,6 +20,8 @@ Include this package in your spec or support file
 import 'cypress-if'
 ```
 
+Types for the `.if()` and `.else()` commands are described in the [src/index.d.ts](./src/index.d.ts) file.
+
 ## Use
 
 Let's say, there is a dialog that might sometimes be visible when you visit the page. You can close it by finding it using the [cy.get](https://on.cypress.io/get) command follows by the `.if()` command. If the dialog really exists, then all commands chained after `.if()` run. If the dialog is not found, then the rest of the chain is skipped.

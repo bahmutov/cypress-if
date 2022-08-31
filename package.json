@@ -3,6 +3,7 @@
   "version": "0.0.0-development",
   "description": "Easy conditional if-else logic for your Cypress tests",
   "main": "src/index.js",
+  "types": "src/index.d.ts",
   "scripts": {
     "test": "cypress run",
     "badges": "npx -p dependency-version-badge update-badge cypress",

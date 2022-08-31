@@ -1,4 +1,6 @@
 /// <reference types="cypress" />
+// @ts-check
+
 import '../../src'
 
 function visit(showDialog = true) {
