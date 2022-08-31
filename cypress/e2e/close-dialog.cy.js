@@ -128,3 +128,38 @@ describe('cy.contains support', () => {
     },
   )
 })
+
+describe('cy.find support', () => {
+  it(
+    'finds the close button and closes the dialog',
+    { viewportWidth: 500, viewportHeight: 500 },
+    () => {
+      visit(true)
+      // make sure the page has finished loading
+      cy.get('#main')
+      cy.get('body').find('#close').if('visible').wait(1000).click()
+      // if there is a dialog on top,
+      // then the main text is not visible
+      cy.get('#main').should('be.visible')
+      // in this test the dialog should have been submitted
+      cy.get('@submitForm').should('have.been.calledOnce')
+    },
+  )
+
+  it(
+    'skips click when it cannot find the button',
+    { viewportWidth: 500, viewportHeight: 500 },
+    () => {
+      visit(false)
+      // make sure the page has finished loading
+      cy.get('#main')
+      // then check if the close button is present
+      cy.get('body').find('#close').if('visible').wait(1000).click()
+      // if there is a dialog on top,
+      // then the main text is not visible
+      cy.get('#main').should('be.visible')
+      // in this test the dialog was never submitted
+      cy.get('@submitForm').should('not.have.been.called')
+    },
+  )
+})

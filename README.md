@@ -2,7 +2,7 @@
 
 **DO NOT USE YET**
 
-Tested with `cy.get`, `cy.contains` commands
+Tested with `cy.get`, `cy.contains`, `cy.find`, `.then`, `.within` commands
 
 ## Install
 
