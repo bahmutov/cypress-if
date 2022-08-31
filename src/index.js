@@ -62,9 +62,14 @@ Cypress.Commands.add(
       }
     }
 
+    const chainerId = cmd.attributes.chainerId
+    if (!chainerId) {
+      throw new Error('Command is missing chainer id')
+    }
+
     if (!hasSubject || !assertionsPassed) {
       let nextCommand = cmd.attributes.next
-      while (nextCommand) {
+      while (nextCommand && nextCommand.attributes.chainerId === chainerId) {
         debug(
           'skipping the next "%s" command "%s"',
           nextCommand.attributes.type,
@@ -80,17 +85,9 @@ Cypress.Commands.add(
           nextCommand.attributes.skip = true
 
           nextCommand = nextCommand.attributes.next
-          if (nextCommand) {
-            if (nextCommand.attributes.type === 'parent') {
-              debug(
-                'stop skipping commands, see a parent command "%s"',
-                nextCommand.attributes.name,
-              )
-              nextCommand = null
-            } else if (nextCommand.attributes.name === 'else') {
-              debug('stop skipping command on "else" command')
-              nextCommand = null
-            }
+          if (nextCommand && nextCommand.attributes.name === 'else') {
+            debug('stop skipping command on "else" command')
+            nextCommand = null
           }
         }
       }
@@ -137,8 +134,6 @@ Cypress.Commands.add('else', { prevSubject: true }, (subject) => {
   // debug('current subject', cy.currentSubject())
   // debug('current command attributes', cy.state('current').attributes)
   // console.log('subjects', cy.state('subjects'))
-  // debugger
-  debugger
   if (typeof subject === 'undefined') {
     // find the subject from the "if()" before
     subject = findMyIfSubject(cy.state('current').attributes)
