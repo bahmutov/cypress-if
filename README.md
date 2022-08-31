@@ -1,6 +1,6 @@
 # cypress-if ![cypress version](https://img.shields.io/badge/cypress-10.6.0-brightgreen) [![ci](https://github.com/bahmutov/cypress-if/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/bahmutov/cypress-if/actions/workflows/ci.yml)
 
-**DO NOT USE YET**
+> Easy conditional if-else logic for your Cypress tests
 
 Tested with `cy.get`, `cy.contains`, `cy.find`, `.then`, `.within` commands
 
@@ -75,6 +75,36 @@ cy.get('#enrolled')
   // the checkbox should be passed into .else()
   .else()
   .check()
+```
+
+## Multiple commands
+
+Sometimes it makes sense to place the "if" or "else" commands into `.then()` block
+
+```js
+cy.get('#survey')
+  .if('visible')
+  .then(() => {
+    cy.log('closing the survey')
+    cy.contains('button', 'Close').click()
+  })
+  .else()
+  .then(() => {
+    cy.log('Already closed')
+  })
+```
+
+## Within
+
+You can attach `.within()` command to the `.if()`
+
+```js
+cy.get('#survey')
+  .if('visible')
+  .within(() => {
+    // fill the survey
+    // click the submit button
+  })
 ```
 
 ## Debugging

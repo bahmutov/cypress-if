@@ -1,7 +1,7 @@
 {
   "name": "cypress-if",
   "version": "0.0.0-development",
-  "description": "Custom cypress cy.if command experiment",
+  "description": "Easy conditional if-else logic for your Cypress tests",
   "main": "src/index.js",
   "scripts": {
     "test": "cypress run",
