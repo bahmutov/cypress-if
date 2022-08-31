@@ -5,14 +5,22 @@ Cypress.Commands.add(
   { prevSubject: true },
   function (subject, assertion) {
     const cmd = cy.state('current')
-    debug('if', cmd.attributes, 'subject', subject)
+    debug('if', cmd.attributes, 'subject', subject, 'assertion?', assertion)
     debug('next command', cmd.next)
 
     const hasSubject = Boolean(subject)
     let assertionsPassed = true
     if (hasSubject && assertion) {
       try {
-        expect(subject).to.be[assertion]
+        if (assertion.startsWith('not')) {
+          const parts = assertion.split('.')
+          let assertionReduced = expect(subject).to
+          parts.forEach((assertionPart) => {
+            assertionReduced = assertionReduced[assertionPart]
+          })
+        } else {
+          expect(subject).to.be[assertion]
+        }
       } catch (e) {
         console.error(e)
         assertionsPassed = false
