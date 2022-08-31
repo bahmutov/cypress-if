@@ -52,6 +52,19 @@ it(
   },
 )
 
+it(
+  'controls the cy.get timeout',
+  { viewportWidth: 500, viewportHeight: 500 },
+  () => {
+    visit(false)
+    cy.get('does-not-exist', { timeout: 0 })
+      .if()
+      .log('found it')
+      .else()
+      .log('does not exist')
+  },
+)
+
 describe('cy.then support', () => {
   it(
     'executes the .then callback if the dialog is visible',

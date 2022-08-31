@@ -22,17 +22,3 @@ it('clicks on the button if it is visible', () => {
   // but we can click on the visible button
   cy.get('button#load').if('visible').click()
 })
-
-describe('cy.contains support', () => {
-  it('clicks on the button by text if exists', () => {
-    cy.visit('cypress/index.html')
-    cy.log('**button exists**')
-    cy.contains('button', 'Load').if().click()
-    cy.log('**attached assertions are passing**')
-    cy.contains('button', 'Load').if().should('be.visible')
-    cy.log('**button does not exist**')
-    cy.contains('button', 'does-not-exist').if().click()
-    cy.log('**attached assertions are skipped**')
-    cy.contains('button', 'does-not-exist').if().should('not.exist')
-  })
-})

@@ -148,7 +148,7 @@ Cypress.Commands.add('else', { prevSubject: true }, (subject) => {
   }
 })
 
-Cypress.Commands.overwrite('get', function (get, selector) {
+Cypress.Commands.overwrite('get', function (get, selector, options) {
   // can we see the next command already?
   const cmd = cy.state('current')
   debug(cmd)
@@ -156,7 +156,7 @@ Cypress.Commands.overwrite('get', function (get, selector) {
 
   if (next && next.attributes.name === 'if') {
     // disable the built-in assertion
-    return get(selector).then(
+    return get(selector, options).then(
       (getResult) => {
         debug('internal get result', getResult)
         return getResult
@@ -167,5 +167,36 @@ Cypress.Commands.overwrite('get', function (get, selector) {
     )
   }
 
-  return get(selector)
+  return get(selector, options)
 })
+
+Cypress.Commands.overwrite(
+  'contains',
+  function (contains, prevSubject, selector, text, options) {
+    debug('contains arguments number', arguments.length)
+    if (arguments.length === 3) {
+      text = selector
+      selector = undefined
+    }
+    debug('contains args', { prevSubject, selector, text, options })
+
+    const cmd = cy.state('current')
+    debug(cmd)
+    const next = cmd.attributes.next
+
+    if (next && next.attributes.name === 'if') {
+      // disable the built-in assertion
+      return contains(prevSubject, selector, text, options).then(
+        (getResult) => {
+          debug('internal contains result', getResult)
+          return getResult
+        },
+        (noResult) => {
+          debug('no contains result', noResult)
+        },
+      )
+    }
+
+    return contains(prevSubject, selector, text, options)
+  },
+)
