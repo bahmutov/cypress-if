@@ -14,6 +14,18 @@ function skipRestOfTheChain(cmd) {
   }
 }
 
+function findMyIfSubject(elseCommandAttributes) {
+  if (!elseCommandAttributes) {
+    return
+  }
+  if (elseCommandAttributes.name === 'if') {
+    return elseCommandAttributes.ifSubject
+  }
+  if (elseCommandAttributes.prev) {
+    return findMyIfSubject(elseCommandAttributes.prev.attributes)
+  }
+}
+
 Cypress.Commands.add(
   'if',
   { prevSubject: true },
@@ -21,6 +33,11 @@ Cypress.Commands.add(
     const cmd = cy.state('current')
     debug('if', cmd.attributes, 'subject', subject, 'assertion?', assertion)
     debug('next command', cmd.next)
+    debug('if() current subject', cy.currentSubject())
+    // console.log('subjects', cy.state('subjects'))
+    // keep the subject, if there is an "else" branch
+    // it can look it up to use
+    cmd.attributes.ifSubject = subject
 
     const hasSubject = Boolean(subject)
     let assertionsPassed = true
@@ -116,7 +133,16 @@ Cypress.Commands.add(
 )
 
 Cypress.Commands.add('else', { prevSubject: true }, (subject) => {
-  debug('else command, subject', subject)
+  // debug('else command, subject', subject)
+  // debug('current subject', cy.currentSubject())
+  // debug('current command attributes', cy.state('current').attributes)
+  // console.log('subjects', cy.state('subjects'))
+  // debugger
+  debugger
+  if (typeof subject === 'undefined') {
+    // find the subject from the "if()" before
+    subject = findMyIfSubject(cy.state('current').attributes)
+  }
   if (subject) {
     cy.wrap(subject, { log: false })
   }
