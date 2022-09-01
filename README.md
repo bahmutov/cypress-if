@@ -111,6 +111,20 @@ cy.get('#survey')
   })
 ```
 
+## finally
+
+You might want to finish if/else command chains and continue afterwards. This is the purpose for the `.finally()` child command:
+
+```js
+cy.get('#agreed')
+  .if('not.checked')
+  .check()
+  .else()
+  .log('already checked')
+  .finally()
+  .should('be.checked')
+```
+
 ## Debugging
 
 This module uses [debug](https://github.com/debug-js/debug#readme) module to output verbose browser console messages when needed. To turn the logging on, open the browser's DevTools console and set the local storage entry:

@@ -130,6 +130,18 @@ Cypress.Commands.add('else', { prevSubject: true }, (subject) => {
   }
 })
 
+Cypress.Commands.add('finally', { prevSubject: true }, (subject) => {
+  // notice: cy.log yields "null" 🤯
+  // https://github.com/cypress-io/cypress/issues/23400
+  if (typeof subject === 'undefined' || subject === null) {
+    // find the subject from the "if()" before
+    subject = findMyIfSubject(cy.state('current').attributes)
+  }
+  if (subject) {
+    cy.wrap(subject, { log: false })
+  }
+})
+
 Cypress.Commands.overwrite('get', function (get, selector, options) {
   // can we see the next command already?
   const cmd = cy.state('current')

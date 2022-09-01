@@ -21,5 +21,16 @@ declare namespace Cypress {
      *    .else().check()
      */
     else(): Chainable<any>
+    /**
+     * Finishes if/else commands and continues
+     * with the subject yielded by the original command
+     * or if/else path taken
+     * @example
+     *  cy.get('checkbox')
+     *    .if('not.checked').check()
+     *    .else().log('already checked')
+     *    .finally().should('be.checked')
+     */
+    finally(): Chainable<any>
   }
 }
