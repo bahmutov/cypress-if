@@ -20,7 +20,8 @@
   "devDependencies": {
     "cypress": "10.7.0",
     "prettier": "^2.7.1",
-    "semantic-release": "^19.0.5"
+    "semantic-release": "^19.0.5",
+    "cypress-xpath": "2.0.1"
   },
   "repository": {
     "type": "git",
