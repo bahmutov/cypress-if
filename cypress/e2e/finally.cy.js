@@ -9,7 +9,7 @@ describe('finally', () => {
     cy.get('#enrolled').if('not.checked').check().finally().should('be.checked')
   })
 
-  it.only('executes after the ELSE path', () => {
+  it('executes after the ELSE path', () => {
     cy.visit('cypress/checkbox.html')
     cy.get('#agreed')
       .if('not.checked')

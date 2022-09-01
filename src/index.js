@@ -131,7 +131,9 @@ Cypress.Commands.add('else', { prevSubject: true }, (subject) => {
 })
 
 Cypress.Commands.add('finally', { prevSubject: true }, (subject) => {
-  if (typeof subject === 'undefined') {
+  // notice: cy.log yields "null" 🤯
+  // https://github.com/cypress-io/cypress/issues/23400
+  if (typeof subject === 'undefined' || subject === null) {
     // find the subject from the "if()" before
     subject = findMyIfSubject(cy.state('current').attributes)
   }
