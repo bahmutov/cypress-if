@@ -35,11 +35,47 @@ it(
 )
 
 it(
+  'closes the survey dialog using xpath',
+  { viewportWidth: 500, viewportHeight: 500 },
+  () => {
+    visit(true)
+    cy.xpath("//dialog[@id='survey']")
+      .if('visible')
+      .wait(1000)
+      .contains('button', 'Close')
+      .click()
+    // if there is a dialog on top,
+    // then the main text is not visible
+    cy.get('#main').should('be.visible')
+    // in this test the dialog should have been submitted
+    cy.get('@submitForm').should('have.been.calledOnce')
+  },
+)
+
+it(
   'skips the commands since the dialog is closed',
   { viewportWidth: 500, viewportHeight: 500 },
   () => {
     visit(false)
     cy.get('dialog#survey')
+      .if('visible')
+      .wait(1000)
+      .contains('button', 'Close')
+      .click()
+    // if there is a dialog on top,
+    // then the main text is not visible
+    cy.get('#main').should('be.visible')
+    // in this test the dialog was never submitted
+    cy.get('@submitForm').should('not.have.been.called')
+  },
+)
+
+it(
+  'skips the commands since the dialog is closed using xpath',
+  { viewportWidth: 500, viewportHeight: 500 },
+  () => {
+    visit(false)
+    cy.get("//dialog[@id='survey']")
       .if('visible')
       .wait(1000)
       .contains('button', 'Close')
@@ -65,6 +101,19 @@ it(
   },
 )
 
+it(
+  'controls the cy.xpath timeout',
+  { viewportWidth: 500, viewportHeight: 500 },
+  () => {
+    visit(false)
+    cy.xpath('//does-not-exist', { timeout: 0 })
+      .if()
+      .log('found it')
+      .else()
+      .log('does not exist')
+  },
+)
+
 describe('cy.then support', () => {
   it(
     'executes the .then callback if the dialog is visible',
@@ -72,6 +121,27 @@ describe('cy.then support', () => {
     () => {
       visit(true)
       cy.get('dialog#survey')
+        .if('visible')
+        .then(() => {
+          cy.log('**closing the dialog**')
+          cy.contains('dialog#survey button', 'Close').wait(1000).click()
+          cy.get('dialog').should('not.be.visible')
+        })
+
+      // if there is a dialog on top,
+      // then the main text is not visible
+      cy.get('#main').should('be.visible')
+      // in this test the dialog should have been submitted
+      cy.get('@submitForm').should('have.been.calledOnce')
+    },
+  )
+
+  it(
+    'executes the .then callback if the dialog is visible using xpath',
+    { viewportWidth: 500, viewportHeight: 500 },
+    () => {
+      visit(true)
+      cy.xpath("//dialog[@id='survey']")
         .if('visible')
         .then(() => {
           cy.log('**closing the dialog**')
@@ -106,6 +176,26 @@ describe('cy.then support', () => {
       cy.get('@submitForm').should('not.have.been.called')
     },
   )
+
+  it(
+    'skips the .then callback if the dialog is hidden using xpath',
+    { viewportWidth: 500, viewportHeight: 500 },
+    () => {
+      visit(false)
+      cy.xpath("//dialog[@id='survey']")
+        .if('visible')
+        .then(() => {
+          cy.log('**closing the dialog**')
+          cy.contains('dialog#survey button', 'Close').wait(1000).click()
+          cy.get('dialog').should('not.be.visible')
+        })
+      // if there is a dialog on top,
+      // then the main text is not visible
+      cy.get('#main').should('be.visible')
+      // in this test the dialog was never submitted
+      cy.get('@submitForm').should('not.have.been.called')
+    },
+  )
 })
 
 describe('cy.contains support', () => {
@@ -127,11 +217,45 @@ describe('cy.contains support', () => {
   )
 
   it(
+    'clicks the close survey button using xpath',
+    { viewportWidth: 500, viewportHeight: 500 },
+    () => {
+      visit(true)
+      cy.xpath("//dialog[@id='survey']//button[contains(text(),'Close')]")
+        .if('visible')
+        .wait(1000)
+        .click()
+      // if there is a dialog on top,
+      // then the main text is not visible
+      cy.get('#main').should('be.visible')
+      // in this test the dialog should have been submitted
+      cy.get('@submitForm').should('have.been.calledOnce')
+    },
+  )
+
+  it(
     'skips click when the button is hidden',
     { viewportWidth: 500, viewportHeight: 500 },
     () => {
       visit(false)
       cy.contains('dialog#survey button', 'Close')
+        .if('visible')
+        .wait(1000)
+        .click()
+      // if there is a dialog on top,
+      // then the main text is not visible
+      cy.get('#main').should('be.visible')
+      // in this test the dialog was never submitted
+      cy.get('@submitForm').should('not.have.been.called')
+    },
+  )
+
+  it(
+    'skips click when the button is hidden using xpath',
+    { viewportWidth: 500, viewportHeight: 500 },
+    () => {
+      visit(false)
+      cy.xpath("//dialog[@id='survey']//button[contains(text(),'Close')]")
         .if('visible')
         .wait(1000)
         .click()

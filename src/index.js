@@ -231,5 +231,5 @@ Cypress.Commands.overwrite('xpath', function (xpath, selector, options) {
     )
   }
 
-  return get(selector, options)
+  return xpath(selector, options)
 })

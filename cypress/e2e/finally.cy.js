@@ -9,9 +9,29 @@ describe('finally', () => {
     cy.get('#enrolled').if('not.checked').check().finally().should('be.checked')
   })
 
+  it('executes after the IF path using xpath', () => {
+    cy.visit('cypress/checkbox.html')
+    cy.xpath("//input[@id='enrolled']")
+      .if('not.checked')
+      .check()
+      .finally()
+      .should('be.checked')
+  })
+
   it('executes after the ELSE path', () => {
     cy.visit('cypress/checkbox.html')
     cy.get('#agreed')
+      .if('not.checked')
+      .check()
+      .else()
+      .log('already checked')
+      .finally()
+      .should('be.checked')
+  })
+
+  it('executes after the ELSE path using xpath', () => {
+    cy.visit('cypress/checkbox.html')
+    cy.xpath("//input[@id='agreed']")
       .if('not.checked')
       .check()
       .else()
