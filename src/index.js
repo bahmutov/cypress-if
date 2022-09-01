@@ -1,3 +1,4 @@
+require('cypress-xpath')
 const debug = require('debug')('cypress-if')
 
 function skipRestOfTheChain(cmd, chainerId) {
@@ -210,3 +211,25 @@ Cypress.Commands.overwrite(
     return contains(prevSubject, selector, text, options)
   },
 )
+
+Cypress.Commands.overwrite('xpath', function (xpath, selector, options) {
+  // can we see the next command already?
+  const cmd = cy.state('current')
+  debug(cmd)
+  const next = cmd.attributes.next
+
+  if (next && next.attributes.name === 'if') {
+    // disable the built-in assertion
+    return xpath(selector, options).then(
+      (getResult) => {
+        debug('internal get result', getResult)
+        return getResult
+      },
+      (noResult) => {
+        debug('no get result', noResult)
+      },
+    )
+  }
+
+  return get(selector, options)
+})
