@@ -1,7 +1,11 @@
 const debug = require('debug')('cypress-if')
 
 function skipRestOfTheChain(cmd, chainerId) {
-  while (cmd && cmd.attributes.chainerId === chainerId) {
+  while (
+    cmd &&
+    cmd.attributes.chainerId === chainerId &&
+    cmd.attributes.name !== 'finally'
+  ) {
     debug('skipping "%s"', cmd.attributes.name)
     cmd.attributes.skip = true
     cmd = cmd.attributes.next
@@ -14,6 +18,12 @@ function findMyIfSubject(elseCommandAttributes) {
   }
   if (elseCommandAttributes.name === 'if') {
     return elseCommandAttributes.ifSubject
+  }
+  if (
+    !elseCommandAttributes.skip &&
+    !Cypress._.isNil(elseCommandAttributes.subject)
+  ) {
+    return elseCommandAttributes.subject
   }
   if (elseCommandAttributes.prev) {
     return findMyIfSubject(elseCommandAttributes.prev.attributes)
@@ -74,7 +84,7 @@ Cypress.Commands.add(
           debug('else branch starts right away')
           nextCommand = null
         } else {
-          debug('skipping "%s"', nextCommand.attributes.name)
+          debug('am skipping "%s"', nextCommand.attributes.name)
           debug(nextCommand.attributes)
           nextCommand.attributes.skip = true
 
@@ -87,6 +97,7 @@ Cypress.Commands.add(
       }
 
       if (subject) {
+        debug('wrapping subject', subject)
         cy.wrap(subject, { log: false })
       }
       return
@@ -117,7 +128,7 @@ Cypress.Commands.add(
 )
 
 Cypress.Commands.add('else', { prevSubject: true }, (subject) => {
-  // debug('else command, subject', subject)
+  debug('else command, subject', subject)
   // debug('current subject', cy.currentSubject())
   // debug('current command attributes', cy.state('current').attributes)
   // console.log('subjects', cy.state('subjects'))
@@ -131,11 +142,16 @@ Cypress.Commands.add('else', { prevSubject: true }, (subject) => {
 })
 
 Cypress.Commands.add('finally', { prevSubject: true }, (subject) => {
+  debug('finally with the subject', subject)
+
   // notice: cy.log yields "null" 🤯
   // https://github.com/cypress-io/cypress/issues/23400
   if (typeof subject === 'undefined' || subject === null) {
     // find the subject from the "if()" before
-    subject = findMyIfSubject(cy.state('current').attributes)
+    const currentCommand = cy.state('current').attributes
+    debug('current command is finally', currentCommand)
+    subject = findMyIfSubject(currentCommand)
+    debug('found subject', subject)
   }
   if (subject) {
     cy.wrap(subject, { log: false })
