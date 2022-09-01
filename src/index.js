@@ -130,6 +130,16 @@ Cypress.Commands.add('else', { prevSubject: true }, (subject) => {
   }
 })
 
+Cypress.Commands.add('finally', { prevSubject: true }, (subject) => {
+  if (typeof subject === 'undefined') {
+    // find the subject from the "if()" before
+    subject = findMyIfSubject(cy.state('current').attributes)
+  }
+  if (subject) {
+    cy.wrap(subject, { log: false })
+  }
+})
+
 Cypress.Commands.overwrite('get', function (get, selector, options) {
   // can we see the next command already?
   const cmd = cy.state('current')
