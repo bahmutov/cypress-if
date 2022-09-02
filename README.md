@@ -2,7 +2,7 @@
 
 > Easy conditional if-else logic for your Cypress tests
 
-Tested with `cy.get`, `cy.contains`, `cy.find`, `.then`, `.within` commands
+Tested with `cy.get`, `cy.contains`, `cy.find`, `.then`, `.within` commands in Cypress v10+ only.
 
 - 📺 [Introduction To Using cypress-if Plugin to Write Conditional Cypress Commands](https://youtu.be/TVwU0OvrVUA)
 
