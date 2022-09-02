@@ -5,6 +5,7 @@
 Tested with `cy.get`, `cy.contains`, `cy.find`, `.then`, `.within` commands in Cypress v10+ only.
 
 - 📺 [Introduction To Using cypress-if Plugin to Write Conditional Cypress Commands](https://youtu.be/TVwU0OvrVUA)
+- 🎓 Covered in my [Cypress Plugins course](https://cypress.tips/courses/cypress-plugins)
 
 ## Install
 
