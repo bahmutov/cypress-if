@@ -1,0 +1,31 @@
+<html>
+  <head>
+    <style>
+      button {
+        margin-top: 1rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <input type="checkbox" id="agreed" />
+      <span>I agree to the terms & conditions.</span>
+    </div>
+    <button id="submit" disabled>Submit</button>
+    <script>
+      document.getElementById('agreed').addEventListener('change', (e) => {
+        document.getElementById('submit').disabled = !e.target.checked
+      })
+
+      if (Math.random() < 0.5) {
+        console.log('checked = true')
+        // in 50% of the cases, the checkbox is checked
+        // in other cases, the checkbox is unchecked
+        document.getElementById('agreed').checked = true
+        document.getElementById('submit').disabled = false
+      } else {
+        console.log('checked = false')
+      }
+    </script>
+  </body>
+</html>
