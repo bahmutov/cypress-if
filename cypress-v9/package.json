@@ -1,0 +1,16 @@
+{
+  "name": "cypress-v9",
+  "version": "1.0.0",
+  "description": "Testing on Cypress v9",
+  "private": true,
+  "main": "index.js",
+  "scripts": {
+    "test": "cypress run"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^9.7.0"
+  }
+}

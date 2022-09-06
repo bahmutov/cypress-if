@@ -30,6 +30,14 @@ function findMyIfSubject(elseCommandAttributes) {
   }
 }
 
+function getCypressCurrentSubject() {
+  if (typeof cy.currentSubject === 'function') {
+    return cy.currentSubject()
+  }
+  // fallback for Cypress v9 and some early v10 versions
+  return cy.state('subject')
+}
+
 Cypress.Commands.add(
   'if',
   { prevSubject: true },
@@ -37,7 +45,7 @@ Cypress.Commands.add(
     const cmd = cy.state('current')
     debug('if', cmd.attributes, 'subject', subject, 'assertion?', assertion)
     debug('next command', cmd.next)
-    debug('if() current subject', cy.currentSubject())
+    debug('if() current subject', getCypressCurrentSubject())
     // console.log('subjects', cy.state('subjects'))
     // keep the subject, if there is an "else" branch
     // it can look it up to use
@@ -129,9 +137,6 @@ Cypress.Commands.add(
 
 Cypress.Commands.add('else', { prevSubject: true }, (subject) => {
   debug('else command, subject', subject)
-  // debug('current subject', cy.currentSubject())
-  // debug('current command attributes', cy.state('current').attributes)
-  // console.log('subjects', cy.state('subjects'))
   if (typeof subject === 'undefined') {
     // find the subject from the "if()" before
     subject = findMyIfSubject(cy.state('current').attributes)

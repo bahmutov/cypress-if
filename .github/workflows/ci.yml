@@ -7,9 +7,44 @@ jobs:
       - name: Checkout 🛎
         uses: actions/checkout@v3
 
-      - name: Run tests 🧪
+      - name: Run Cypress tests 🧪
         # https://github.com/cypress-io/github-action
         uses: cypress-io/github-action@v4
+
+  test-cypress-v9:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v3
+
+      - name: Install top dependencies 📦
+        # https://github.com/cypress-io/github-action
+        uses: cypress-io/github-action@v4
+        with:
+          runTests: false
+
+      - name: Run Cypress v9 tests 🧪
+        uses: cypress-io/github-action@v4
+        with:
+          working-directory: cypress-v9
+
+      - uses: actions/upload-artifact@v2
+        name: Store any v9 screenshots 🖼
+        if: failure()
+        with:
+          name: cypress-screenshots-v9
+          path: cypress-v9/cypress/screenshots
+
+  release:
+    needs: [test, test-cypress-v9]
+    runs-on: ubuntu-20.04
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v3
+
+      - name: Install only the semantic release 📦
+        run: npm install semantic-release
 
       - name: Semantic Release 🚀
         uses: cycjimmy/semantic-release-action@v2
