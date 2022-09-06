@@ -5,6 +5,7 @@
 Tested with `cy.get`, `cy.contains`, `cy.find`, `.then`, `.within` commands in Cypress v9 and v10+.
 
 - 📺 [Introduction To Using cypress-if Plugin to Write Conditional Cypress Commands](https://youtu.be/TVwU0OvrVUA)
+- 📺 [Confirm Cypress Command Execution Order Using Sinon.js Spies](https://youtu.be/RTzJu44yAc8)
 - 🎓 Covered in my [Cypress Plugins course](https://cypress.tips/courses/cypress-plugins)
 
 ## Install
@@ -140,6 +141,7 @@ If you re-run the tests, you should see the messages appear in the console
 
 ## See also
 
+- [cypress-wait-if-happens](https://github.com/bahmutov/cypress-wait-if-happens)
 - [cypress-ngx-ui-testing](https://github.com/swimlane/ngx-ui/tree/master/projects/swimlane/ngx-ui-testing)
 
 ## Small print
