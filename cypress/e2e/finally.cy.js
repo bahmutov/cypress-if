@@ -96,4 +96,26 @@ describe('finally', () => {
       .finally()
       .should('equal', -1)
   })
+
+  it('calls else command before finally', () => {
+    cy.wrap(1)
+      // .if() comes from the cypress-if plugin
+      // https://github.com/bahmutov/cypress-if
+      .if('equals', 2)
+      .log('if branch')
+      .then(cy.spy().as('if'))
+      .else()
+      .log('else branch')
+      .then(cy.spy().as('else'))
+      .finally()
+      .log('finally')
+      .then(cy.spy().as('finally'))
+    cy.get('@else').should('have.been.calledOnce')
+    cy.get('@finally').should('have.been.calledOnce')
+    cy.get('@if').should('not.be.called')
+    cy.log('**else was called before finally**')
+    cy.get('@finally').then((fin) => {
+      cy.get('@else').should('have.been.calledBefore', fin)
+    })
+  })
 })

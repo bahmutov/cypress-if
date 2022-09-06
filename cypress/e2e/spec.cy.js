@@ -22,3 +22,8 @@ it('clicks on the button if it is visible', () => {
   // but we can click on the visible button
   cy.get('button#load').if('visible').click()
 })
+
+it('works if nothing is attached', () => {
+  cy.wrap(1).if('equal', 1)
+  cy.wrap(1).if('not.equal', 1)
+})
