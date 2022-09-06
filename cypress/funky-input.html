@@ -1,0 +1,10 @@
+<body>
+  <input id="name" />
+  <p>Your name?</p>
+  <script>
+    setTimeout(() => {
+      // clear the input box suddenly
+      document.getElementById('name').value = ''
+    }, Math.random() * 30 + 70)
+  </script>
+</body>

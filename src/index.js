@@ -55,11 +55,18 @@ Cypress.Commands.add(
     let assertionsPassed = true
     if (hasSubject && assertion) {
       try {
-        if (assertion.startsWith('not')) {
+        if (assertion.startsWith('not') || assertion.startsWith('have')) {
           const parts = assertion.split('.')
           let assertionReduced = expect(subject).to
-          parts.forEach((assertionPart) => {
-            assertionReduced = assertionReduced[assertionPart]
+          parts.forEach((assertionPart, k) => {
+            if (
+              k === parts.length - 1 &&
+              typeof assertionValue !== 'undefined'
+            ) {
+              assertionReduced = assertionReduced[assertionPart](assertionValue)
+            } else {
+              assertionReduced = assertionReduced[assertionPart]
+            }
           })
         } else {
           if (typeof assertionValue !== 'undefined') {
