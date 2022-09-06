@@ -2,7 +2,7 @@
 
 import '../../src'
 
-it.only('submits the terms forms', () => {
+it('submits the terms forms', () => {
   cy.visit('cypress/terms.html')
   cy.get('#agreed')
     .if('not.checked')
