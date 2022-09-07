@@ -55,7 +55,18 @@ Cypress.Commands.add(
     let assertionsPassed = true
     if (hasSubject && assertion) {
       try {
-        if (assertion.startsWith('not') || assertion.startsWith('have')) {
+        if (Cypress._.isFunction(assertion)) {
+          const result = assertion(subject)
+          if (Cypress._.isBoolean(result)) {
+            // function was a predicate
+            if (!result) {
+              throw new Error('Predicate function failed')
+            }
+          }
+        } else if (
+          assertion.startsWith('not') ||
+          assertion.startsWith('have')
+        ) {
           const parts = assertion.split('.')
           let assertionReduced = expect(subject).to
           parts.forEach((assertionPart, k) => {
