@@ -74,7 +74,24 @@ const is42 = (n) => expect(n).to.equal(42)
 cy.wrap(42).if(is42).log('42!').else().log('some other number')
 ```
 
-For more see the [cypress/e2e/callback.cy.js](./cypress/e2e/callback.cy.js) spec
+For more examples, see the [cypress/e2e/callback.cy.js](./cypress/e2e/callback.cy.js) spec
+
+### Combining assertions
+
+If you want to right complex assertions that combine other checks using AND, OR connectors, please use a callback function.
+
+```js
+// AND predicate using &&
+cy.wrap(42).if((n) => n > 20 && n < 50)
+// AND connector using Chai "and" connector
+cy.wrap(42).if((n) => expect(n).to.be.greaterThan(20).and.to.be.lessThan(50))
+// OR predicate using ||
+cy.wrap(42).if((n) => n > 20 || n < 10)
+```
+
+Unfortunately, there is no Chai OR connector.
+
+For more examples, see the [cypress/e2e/and-or.cy.js](./cypress/e2e/and-or.cy.js) spec file
 
 ## else command
 
