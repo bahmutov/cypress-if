@@ -128,6 +128,10 @@ cy.get('#agreed')
   .should('be.checked')
 ```
 
+## More examples
+
+Check out the spec files in [cypress/e2e](./cypress/e2e/) folder. If you still have a question, [open a GitHub issue](https://github.com/bahmutov/cypress-if/issues).
+
 ## Debugging
 
 This module uses [debug](https://github.com/debug-js/debug#readme) module to output verbose browser console messages when needed. To turn the logging on, open the browser's DevTools console and set the local storage entry:
