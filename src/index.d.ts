@@ -1,3 +1,15 @@
+/**
+ * A function that returns true if the value is good for "if" branch
+ * No Cypress commands allowed.
+ */
+type PredicateFn = (x: any) => boolean
+
+/**
+ * A function that uses Chai assertions inside.
+ * No Cypress commands allowed.
+ */
+type AssertionFn = (x: any) => void
+
 declare namespace Cypress {
   interface Chainable {
     /**
@@ -10,6 +22,25 @@ declare namespace Cypress {
      *  cy.wrap(1).if('equal', 1).should('equal', 1)
      */
     if(assertion?: string, value?: any): Chainable<any>
+
+    /**
+     * Child `.if()` command to start an optional chain
+     * depending on the subject
+     * @param callback Predicate function (returning a Boolean value)
+     * @example
+     *  cy.wrap(1).if(n => n % 2 === 0)...
+     */
+    if(callback: PredicateFn): Chainable<any>
+
+    /**
+     * Child `.if()` command to start an optional chain
+     * depending on the subject
+     * @param callback Function with Chai assertions
+     * @example
+     *  cy.wrap(1).if(n => expect(n).to.equal(1))...
+     */
+    if(callback: AssertionFn): Chainable<any>
+
     /**
      * Creates new chain of commands that only
      * execute if the previous `.if()` command skipped
@@ -21,6 +52,7 @@ declare namespace Cypress {
      *    .else().check()
      */
     else(): Chainable<any>
+
     /**
      * Finishes if/else commands and continues
      * with the subject yielded by the original command
