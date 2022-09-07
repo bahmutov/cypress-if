@@ -61,6 +61,21 @@ You can use assertions with `not`
 cy.get('#enrolled').if('not.checked').check()
 ```
 
+### Callback function
+
+You can check the value yourself by writing a callback function, similar to the [should(callback)](http://on.cypress.io/should#Function) and its [many examples](https://glebbahmutov.com/cypress-examples/commands/assertions.html). You can use predicate and Chai assertions, but you **cannot use any Cypress commands inside the callback**, since it only synchronously checks the given value.
+
+```js
+// predicate function returning a boolean
+const isEven = (n) => n % 2 === 0
+cy.wrap(42).if(isEven).log('even').else().log('odd')
+// a function using Chai assertions
+const is42 = (n) => expect(n).to.equal(42)
+cy.wrap(42).if(is42).log('42!').else().log('some other number')
+```
+
+For more see the [cypress/e2e/callback.cy.js](./cypress/e2e/callback.cy.js) spec
+
 ## else command
 
 You can chain `.else()` command that is only executed if the `.if()` is skipped.
