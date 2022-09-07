@@ -61,6 +61,38 @@ You can use assertions with `not`
 cy.get('#enrolled').if('not.checked').check()
 ```
 
+### Callback function
+
+You can check the value yourself by writing a callback function, similar to the [should(callback)](http://on.cypress.io/should#Function) and its [many examples](https://glebbahmutov.com/cypress-examples/commands/assertions.html). You can use predicate and Chai assertions, but you **cannot use any Cypress commands inside the callback**, since it only synchronously checks the given value.
+
+```js
+// predicate function returning a boolean
+const isEven = (n) => n % 2 === 0
+cy.wrap(42).if(isEven).log('even').else().log('odd')
+// a function using Chai assertions
+const is42 = (n) => expect(n).to.equal(42)
+cy.wrap(42).if(is42).log('42!').else().log('some other number')
+```
+
+For more examples, see the [cypress/e2e/callback.cy.js](./cypress/e2e/callback.cy.js) spec
+
+### Combining assertions
+
+If you want to right complex assertions that combine other checks using AND, OR connectors, please use a callback function.
+
+```js
+// AND predicate using &&
+cy.wrap(42).if((n) => n > 20 && n < 50)
+// AND connector using Chai "and" connector
+cy.wrap(42).if((n) => expect(n).to.be.greaterThan(20).and.to.be.lessThan(50))
+// OR predicate using ||
+cy.wrap(42).if((n) => n > 20 || n < 10)
+```
+
+Unfortunately, there is no Chai OR connector.
+
+For more examples, see the [cypress/e2e/and-or.cy.js](./cypress/e2e/and-or.cy.js) spec file
+
 ## else command
 
 You can chain `.else()` command that is only executed if the `.if()` is skipped.
