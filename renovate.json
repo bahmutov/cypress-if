@@ -18,5 +18,6 @@
       "excludePackagePatterns": ["cypress", "debug"],
       "enabled": false
     }
-  ]
+  ],
+  "ignorePaths": ["**/node_modules/**", "cypress-v9/**"]
 }
