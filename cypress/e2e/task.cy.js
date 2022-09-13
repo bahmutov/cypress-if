@@ -28,4 +28,15 @@ describe('cy.task support', () => {
     cy.get('@else').should('have.been.called')
     cy.get('@if').should('not.have.been.called')
   })
+
+  it('throws an error', () => {
+    cy.task('throws')
+      .if('failed')
+      .then(cy.spy().as('if'))
+      .log('cy.task has failed')
+      .else()
+      .then(cy.spy().as('else'))
+    cy.get('@if').should('have.been.called')
+    cy.get('@else').should('not.have.been.called')
+  })
 })

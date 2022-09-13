@@ -160,6 +160,15 @@ cy.get('#agreed')
   .should('be.checked')
 ```
 
+## cy.task
+
+You can perform commands if the `cy.task` failed
+
+```js
+cy.task('throws').if('failed')
+// handle the failure
+```
+
 ## More examples
 
 Check out the spec files in [cypress/e2e](./cypress/e2e/) folder. If you still have a question, [open a GitHub issue](https://github.com/bahmutov/cypress-if/issues).

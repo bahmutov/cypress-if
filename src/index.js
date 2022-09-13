@@ -51,44 +51,58 @@ Cypress.Commands.add(
     // it can look it up to use
     cmd.attributes.ifSubject = subject
 
-    const hasSubject = Boolean(subject)
+    let hasSubject = Boolean(subject)
     let assertionsPassed = true
-    if (hasSubject && assertion) {
-      try {
-        if (Cypress._.isFunction(assertion)) {
-          const result = assertion(subject)
-          if (Cypress._.isBoolean(result)) {
-            // function was a predicate
-            if (!result) {
-              throw new Error('Predicate function failed')
+
+    // check if the previous command was cy.task
+    // and it has failed and it was expected
+    if (
+      assertion === 'failed' &&
+      Cypress._.get(cmd, 'attributes.prev.attributes.name') === 'task' &&
+      Cypress._.isError(Cypress._.get(cmd, 'attributes.prev.attributes.error'))
+    ) {
+      debug('cy.task has failed and it was expected')
+      // set the subject and the assertions to take the IF branch
+      hasSubject = Cypress._.get(cmd, 'attributes.prev.attributes.error')
+    } else {
+      if (hasSubject && assertion) {
+        try {
+          if (Cypress._.isFunction(assertion)) {
+            const result = assertion(subject)
+            if (Cypress._.isBoolean(result)) {
+              // function was a predicate
+              if (!result) {
+                throw new Error('Predicate function failed')
+              }
             }
-          }
-        } else if (
-          assertion.startsWith('not') ||
-          assertion.startsWith('have')
-        ) {
-          const parts = assertion.split('.')
-          let assertionReduced = expect(subject).to
-          parts.forEach((assertionPart, k) => {
-            if (
-              k === parts.length - 1 &&
-              typeof assertionValue !== 'undefined'
-            ) {
-              assertionReduced = assertionReduced[assertionPart](assertionValue)
-            } else {
-              assertionReduced = assertionReduced[assertionPart]
-            }
-          })
-        } else {
-          if (typeof assertionValue !== 'undefined') {
-            expect(subject).to.be[assertion](assertionValue)
+          } else if (
+            assertion.startsWith('not') ||
+            assertion.startsWith('have')
+          ) {
+            const parts = assertion.split('.')
+            let assertionReduced = expect(subject).to
+            parts.forEach((assertionPart, k) => {
+              if (
+                k === parts.length - 1 &&
+                typeof assertionValue !== 'undefined'
+              ) {
+                assertionReduced =
+                  assertionReduced[assertionPart](assertionValue)
+              } else {
+                assertionReduced = assertionReduced[assertionPart]
+              }
+            })
           } else {
-            expect(subject).to.be[assertion]
+            if (typeof assertionValue !== 'undefined') {
+              expect(subject).to.be[assertion](assertionValue)
+            } else {
+              expect(subject).to.be[assertion]
+            }
           }
+        } catch (e) {
+          console.error(e)
+          assertionsPassed = false
         }
-      } catch (e) {
-        console.error(e)
-        assertionsPassed = false
       }
     }
 
@@ -233,3 +247,27 @@ Cypress.Commands.overwrite(
     return contains(prevSubject, selector, text, options)
   },
 )
+
+Cypress.Commands.overwrite('task', function (task, args, options) {
+  debug('cy.task %o', { args, options })
+
+  const cmd = cy.state('current')
+  debug(cmd)
+  const next = cmd.attributes.next
+
+  if (next && next.attributes.name === 'if') {
+    // disable the built-in assertion
+    return task(args, options).then(
+      (taskResult) => {
+        debug('internal task result', taskResult)
+        return taskResult
+      },
+      (error) => {
+        debug('task error', error)
+        cmd.attributes.error = error
+      },
+    )
+  }
+
+  return task(args, options)
+})

@@ -14,6 +14,11 @@ module.exports = defineConfig({
           console.log('returning 42')
           return 42
         },
+
+        throws() {
+          console.log('throwing an error from cy.task')
+          throw new Error('Nope')
+        },
       })
     },
   },
