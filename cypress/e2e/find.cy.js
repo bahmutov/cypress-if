@@ -34,4 +34,19 @@ describe('cy.find', () => {
     cy.get('@else').should('have.been.called')
     cy.get('@if').should('not.have.been.called')
   })
+
+  // https://github.com/bahmutov/cypress-if/issues/32
+  it('checks if the element exists (it does not)', () => {
+    cy.visit('cypress/checkbox.html')
+    cy.get('#app1')
+      .find('#doest-not-exist')
+      .if('exist')
+      .then(cy.spy().as('if'))
+      .log('checkbox found')
+      .else()
+      .log('checkbox not found')
+      .then(cy.spy().as('else'))
+    cy.get('@else').should('have.been.called')
+    cy.get('@if').should('not.have.been.called')
+  })
 })

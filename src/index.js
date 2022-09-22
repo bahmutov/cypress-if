@@ -220,12 +220,12 @@ Cypress.Commands.overwrite('get', function (get, selector, options) {
 Cypress.Commands.overwrite(
   'contains',
   function (contains, prevSubject, selector, text, options) {
-    debug('contains arguments number', arguments.length)
+    debug('cy.contains arguments number', arguments.length)
     if (arguments.length === 3) {
       text = selector
       selector = undefined
     }
-    debug('contains args', { prevSubject, selector, text, options })
+    debug('cy.contains args', { prevSubject, selector, text, options })
 
     const cmd = cy.state('current')
     debug(cmd)
@@ -245,6 +245,32 @@ Cypress.Commands.overwrite(
     }
 
     return contains(prevSubject, selector, text, options)
+  },
+)
+
+Cypress.Commands.overwrite(
+  'find',
+  function (find, prevSubject, selector, options) {
+    debug('cy.find args', { prevSubject, selector, options })
+
+    const cmd = cy.state('current')
+    debug(cmd)
+    const next = cmd.attributes.next
+
+    if (next && next.attributes.name === 'if') {
+      // disable the built-in assertion
+      return find(prevSubject, selector, options).then(
+        (getResult) => {
+          debug('internal cy.find result', getResult)
+          return getResult
+        },
+        (noResult) => {
+          debug('no cy.find result', noResult)
+        },
+      )
+    }
+
+    return find(prevSubject, selector, options)
   },
 )
 
