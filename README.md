@@ -1,4 +1,4 @@
-# cypress-if ![cypress version](https://img.shields.io/badge/cypress-10.8.0-brightgreen) [![ci](https://github.com/bahmutov/cypress-if/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/bahmutov/cypress-if/actions/workflows/ci.yml)
+# cypress-if ![cypress version](https://img.shields.io/badge/cypress-10.9.0-brightgreen) [![ci](https://github.com/bahmutov/cypress-if/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/bahmutov/cypress-if/actions/workflows/ci.yml)
 
 > Easy conditional if-else logic for your Cypress tests
 
