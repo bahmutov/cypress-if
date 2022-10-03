@@ -102,6 +102,9 @@ Cypress.Commands.add(
         } catch (e) {
           console.error(e)
           assertionsPassed = false
+          if (e.message.includes('Invalid Chai property')) {
+            throw e
+          }
         }
       }
     }
