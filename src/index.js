@@ -68,7 +68,15 @@ Cypress.Commands.add(
       // set the subject and the assertions to take the IF branch
       hasSubject = Cypress._.get(cmd, 'attributes.prev.attributes.error')
     } else {
-      if (hasSubject && assertion) {
+      if (subject === null) {
+        if (assertion === 'null') {
+          hasSubject = true
+          assertionsPassed = true
+        } else if (assertion === 'not.null') {
+          hasSubject = true
+          assertionsPassed = false
+        }
+      } else if (hasSubject && assertion) {
         try {
           if (Cypress._.isFunction(assertion)) {
             const result = assertion(subject)

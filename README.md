@@ -185,6 +185,18 @@ cy
 
 See spec [alias.cy.js](./cypress/e2e/alias.cy.js)
 
+## Null values
+
+Typically `null` values are treated same as `undefined` and follow the "else" path. You can specifically check for `null` and `not.null` using these assertions:
+
+```js
+cy.wrap(null).if('null') // takes IF path
+cy.wrap(null).if('not.null') // takes ELSE path
+cy.wrap(42).if('not.null') // takes IF path
+```
+
+See spec [null.cy.js](./cypress/e2e/null.cy.js)
+
 ## More examples
 
 Check out the spec files in [cypress/e2e](./cypress/e2e/) folder. If you still have a question, [open a GitHub issue](https://github.com/bahmutov/cypress-if/issues).
