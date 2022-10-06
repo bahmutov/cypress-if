@@ -1,5 +1,7 @@
 const debug = require('debug')('cypress-if')
 
+const isIfCommand = (cmd) => cmd?.attributes?.name === 'if'
+
 function skipRestOfTheChain(cmd, chainerId) {
   while (
     cmd &&
@@ -38,6 +40,7 @@ function getCypressCurrentSubject() {
   return cy.state('subject')
 }
 
+// cy.if command
 Cypress.Commands.add(
   'if',
   { prevSubject: true },
@@ -204,7 +207,16 @@ Cypress.Commands.overwrite('get', function (get, selector, options) {
   debug(cmd)
   const next = cmd.attributes.next
 
-  if (next && next.attributes.name === 'if') {
+  if (isIfCommand(next)) {
+    if (selector.startsWith('@')) {
+      try {
+        return get(selector, options)
+      } catch (e) {
+        if (e.message.includes('could not find a registered alias for')) {
+          return undefined
+        }
+      }
+    }
     // disable the built-in assertion
     return get(selector, options).then(
       (getResult) => {
