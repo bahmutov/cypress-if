@@ -1,6 +1,7 @@
 const debug = require('debug')('cypress-if')
 
-const isIfCommand = (cmd) => cmd?.attributes?.name === 'if'
+const isIfCommand = (cmd) =>
+  cmd && cmd.attributes && cmd.attributes.name === 'if'
 
 function skipRestOfTheChain(cmd, chainerId) {
   while (
