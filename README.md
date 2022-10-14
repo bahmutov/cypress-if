@@ -9,6 +9,10 @@ Tested with `cy.get`, `cy.contains`, `cy.find`, `.then`, `.within` commands in C
 - 📺 [Confirm Cypress Command Execution Order Using Sinon.js Spies](https://youtu.be/RTzJu44yAc8)
 - 🎓 Covered in my [Cypress Plugins course](https://cypress.tips/courses/cypress-plugins)
 
+## ⚠️ Warning
+
+In general, Cypress team considers [conditional testing an anti-pattern](https://on.cypress.io/conditional-testing). Thus `cypress-if` should be used only if the test really cannot deterministically execute its steps.
+
 ## Install
 
 Add this package as a dev dependency
