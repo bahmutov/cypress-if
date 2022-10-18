@@ -64,5 +64,14 @@ declare namespace Cypress {
      *    .finally().should('be.checked')
      */
     finally(): Chainable<any>
+
+    /**
+     * A simple way to throw an error
+     * @example
+     *  cy.get('li')
+     *    .if('not.have.length', 3)
+     *    .raise('wrong number of todo items')
+     */
+    raise(x: string | Error): Chainable<void>
   }
 }
