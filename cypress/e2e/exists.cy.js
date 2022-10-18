@@ -28,7 +28,7 @@ it('checks an element that does not exists', () => {
 })
 
 // https://github.com/bahmutov/cypress-if/issues/45
-it.skip('checks an element that does not exists using not.exist', () => {
+it('checks an element that does not exists using not.exist', () => {
   cy.get('#not-found').should('not.exist')
   cy.get('#not-found')
     .if('not.exist')
