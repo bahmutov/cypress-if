@@ -201,6 +201,20 @@ cy.wrap(42).if('not.null') // takes IF path
 
 See spec [null.cy.js](./cypress/e2e/null.cy.js)
 
+## raise
+
+This plugin includes a utility custom command `cy.raise` that lets you conveniently throw an error.
+
+```js
+cy.get('li').if('not.have.length', 3).raise('Wrong number of todos')
+```
+
+**Tip:** the above syntax works, but you better pass an Error instance rather than a string to get the exact stack trace location
+
+```js
+cy.get('li').if('not.have.length', 3).raise(new Error('Wrong number of todos'))
+```
+
 ## More examples
 
 Check out the spec files in [cypress/e2e](./cypress/e2e/) folder. If you still have a question, [open a GitHub issue](https://github.com/bahmutov/cypress-if/issues).

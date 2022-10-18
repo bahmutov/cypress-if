@@ -321,3 +321,15 @@ Cypress.Commands.overwrite('task', function (task, args, options) {
 
   return task(args, options)
 })
+
+Cypress.Commands.add('raise', (x) => {
+  if (Cypress._.isError(x)) {
+    throw x
+  }
+  const e = new Error(
+    String(x) +
+      '\n' +
+      'cypress-if tip: pass an error instance to have correct stack',
+  )
+  throw e
+})
