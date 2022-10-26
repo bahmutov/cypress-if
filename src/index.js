@@ -58,6 +58,48 @@ Cypress.Commands.add(
     let hasSubject = Boolean(subject)
     let assertionsPassed = true
 
+    const evaluateAssertion = () => {
+      try {
+        if (Cypress._.isFunction(assertion)) {
+          const result = assertion(subject)
+          if (Cypress._.isBoolean(result)) {
+            // function was a predicate
+            if (!result) {
+              throw new Error('Predicate function failed')
+            }
+          }
+        } else if (
+          assertion.startsWith('not') ||
+          assertion.startsWith('have')
+        ) {
+          const parts = assertion.split('.')
+          let assertionReduced = expect(subject).to
+          parts.forEach((assertionPart, k) => {
+            if (
+              k === parts.length - 1 &&
+              typeof assertionValue !== 'undefined'
+            ) {
+              assertionReduced = assertionReduced[assertionPart](assertionValue)
+            } else {
+              assertionReduced = assertionReduced[assertionPart]
+            }
+          })
+        } else {
+          if (typeof assertionValue !== 'undefined') {
+            expect(subject).to.be[assertion](assertionValue)
+          } else {
+            expect(subject).to.be[assertion]
+          }
+        }
+      } catch (e) {
+        console.error(e)
+        assertionsPassed = false
+        if (e.message.includes('Invalid Chai property')) {
+          throw e
+        }
+      }
+    }
+
     // check if the previous command was cy.task
     // and it has failed and it was expected
     if (
@@ -78,46 +120,10 @@ Cypress.Commands.add(
           assertionsPassed = false
         }
       } else if (hasSubject && assertion) {
-        try {
-          if (Cypress._.isFunction(assertion)) {
-            const result = assertion(subject)
-            if (Cypress._.isBoolean(result)) {
-              // function was a predicate
-              if (!result) {
-                throw new Error('Predicate function failed')
-              }
-            }
-          } else if (
-            assertion.startsWith('not') ||
-            assertion.startsWith('have')
-          ) {
-            const parts = assertion.split('.')
-            let assertionReduced = expect(subject).to
-            parts.forEach((assertionPart, k) => {
-              if (
-                k === parts.length - 1 &&
-                typeof assertionValue !== 'undefined'
-              ) {
-                assertionReduced =
-                  assertionReduced[assertionPart](assertionValue)
-              } else {
-                assertionReduced = assertionReduced[assertionPart]
-              }
-            })
-          } else {
-            if (typeof assertionValue !== 'undefined') {
-              expect(subject).to.be[assertion](assertionValue)
-            } else {
-              expect(subject).to.be[assertion]
-            }
-          }
-        } catch (e) {
-          console.error(e)
-          assertionsPassed = false
-          if (e.message.includes('Invalid Chai property')) {
-            throw e
-          }
-        }
+        evaluateAssertion()
+      } else if (subject === undefined && assertion) {
+        evaluateAssertion()
+        hasSubject = true
       }
     }
 
