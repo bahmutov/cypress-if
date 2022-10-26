@@ -13,6 +13,10 @@ Tested with `cy.get`, `cy.contains`, `cy.find`, `.then`, `.within` commands in C
 
 In general, Cypress team considers [conditional testing an anti-pattern](https://on.cypress.io/conditional-testing). Thus `cypress-if` should be used only if the test really cannot deterministically execute its steps.
 
+## No xpath support
+
+This plugin works by overriding `cy.get`, `cy.find`, and some other Cypress commands. It does NOT override the [cy.xpath](https://www.npmjs.com/package/@cypress/xpath) commands that comes from another plugin. I personally suggest never using `xpath` selectors (and I wrote `cy.xpath`), the jQuery selectors included with Cypress are much more powerful and less prone to breaking. Learn them using [cypress-examples](https://glebbahmutov.com/cypress-examples).
+
 ## Install
 
 Add this package as a dev dependency
