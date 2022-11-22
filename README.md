@@ -182,13 +182,14 @@ cy.task('throws').if('failed')
 You can have conditional commands depending on an alias that might exist.
 
 ```js
-cy
-  .get('@maybe')
+cy.get('@maybe')
   .if()
   // commands to execute if the alias "maybe" exists
   .else()
   // commands to execute if the alias "maybe" does not exist
-  .finally()(
+  .finally()
+  // commands to execute after
+  .log(...)
 ```
 
 See spec [alias.cy.js](./cypress/e2e/alias.cy.js)
