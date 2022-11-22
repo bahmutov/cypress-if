@@ -3,6 +3,11 @@ const debug = require('debug')('cypress-if')
 const isIfCommand = (cmd) =>
   cmd && cmd.attributes && cmd.attributes.name === 'if'
 
+const skipCommand = (cmd) => {
+  cmd.attributes.skip = true
+  cmd.state = 'skipped'
+}
+
 function skipRestOfTheChain(cmd, chainerId) {
   while (
     cmd &&
@@ -10,7 +15,7 @@ function skipRestOfTheChain(cmd, chainerId) {
     cmd.attributes.name !== 'finally'
   ) {
     debug('skipping "%s"', cmd.attributes.name)
-    cmd.attributes.skip = true
+    skipCommand(cmd)
     cmd = cmd.attributes.next
   }
 }
@@ -147,7 +152,7 @@ Cypress.Commands.add(
         } else {
           debug('am skipping "%s"', nextCommand.attributes.name)
           debug(nextCommand.attributes)
-          nextCommand.attributes.skip = true
+          skipCommand(nextCommand)
 
           nextCommand = nextCommand.attributes.next
           if (nextCommand && nextCommand.attributes.name === 'else') {

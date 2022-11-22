@@ -11,6 +11,20 @@ jobs:
         # https://github.com/cypress-io/github-action
         uses: cypress-io/github-action@v4
 
+  # there was a breaking change under the hood in Cypress v11.1.0
+  # so make sure this plugin still works for older versions
+  test-cypress-v11-0:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout 🛎
+        uses: actions/checkout@v3
+
+      - name: Run Cypress tests 🧪
+        # https://github.com/cypress-io/github-action
+        uses: cypress-io/github-action@v4
+        with:
+          build: npm install -D cypress@11.0.1
+
   test-cypress-v9:
     runs-on: ubuntu-20.04
     steps:
@@ -36,7 +50,7 @@ jobs:
           path: cypress-v9/cypress/screenshots
 
   release:
-    needs: [test, test-cypress-v9]
+    needs: [test, test-cypress-v9, test-cypress-v11-0]
     runs-on: ubuntu-20.04
     if: github.ref == 'refs/heads/main'
     steps:
