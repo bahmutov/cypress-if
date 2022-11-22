@@ -2,6 +2,7 @@ const { defineConfig } = require('cypress')
 
 module.exports = defineConfig({
   e2e: {
+    experimentalRunAllSpecs: true,
     fixturesFolder: false,
     supportFile: false,
     viewportWidth: 200,
