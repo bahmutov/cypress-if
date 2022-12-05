@@ -38,3 +38,13 @@ it('checks an element that does not exists using not.exist', () => {
   cy.get('@if').should('have.been.calledOnce')
   cy.get('@else').should('not.have.been.called')
 })
+
+it('clicks on the element with force: true', () => {
+  cy.window()
+    .its('console')
+    .then((console) => {
+      cy.spy(console, 'log').withArgs('clicked').as('logClicked')
+    })
+  cy.get('#load').if('exist').click({ force: true })
+  cy.get('@logClicked').should('have.been.calledOnce')
+})
