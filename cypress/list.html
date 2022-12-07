@@ -1,0 +1,21 @@
+<html>
+  <body>
+    <ul id="fruits">
+      <li>Apples</li>
+      <li>Grapes</li>
+      <li>Kiwi</li>
+    </ul>
+    <button id="load-more" style="display: none">Load more</button>
+    <script>
+      if (Math.random() < 0.5) {
+        // add more items and show the button
+        document.getElementById('fruits').innerHTML += `
+          <li>Pears</li>
+          <li>Melons</li>
+          <li>Blueberries</li>
+        `
+        document.getElementById('load-more').style.display = 'inherit'
+      }
+    </script>
+  </body>
+</html>
