@@ -183,6 +183,32 @@ cy.get('#agreed')
   .should('be.checked')
 ```
 
+`.finally` comes in useful when you are chaining something and don't want the "if/else" to "leak" to the next series of commands. From [#59](https://github.com/bahmutov/cypress-if/issues/59) comes the [issue-59.cy.js](./github/../cypress/e2e/issue-59.cy.js)
+
+```js
+function bar() {
+  return (
+    cy
+      .wrap('testing')
+      .if()
+      .then(() => cy.wrap('got it'))
+      .else()
+      .then(() => cy.wrap('else do'))
+      // to correctly STOP the chaining if/else
+      // from putting anything chained of bar()
+      // need to add .finally() command
+      .finally()
+  )
+}
+bar().then((it) => {
+  cy.log(`result: ${it}`)
+})
+// logs:
+// "testing"
+// "got it"
+// result: got it"
+```
+
 ## cy.task
 
 You can perform commands if the `cy.task` failed
