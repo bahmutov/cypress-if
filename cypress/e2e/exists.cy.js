@@ -48,3 +48,13 @@ it('clicks on the element with force: true', () => {
   cy.get('#load').if('exist').click({ force: true })
   cy.get('@logClicked').should('have.been.calledOnce')
 })
+
+it('uses exists as an alias to exist', () => {
+  cy.get('#fruits')
+    .if('exists')
+    .then(cy.spy().as('if'))
+    .else()
+    .then(cy.spy().as('else'))
+  cy.get('@if').should('have.been.calledOnce')
+  cy.get('@else').should('not.have.been.called')
+})

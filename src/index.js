@@ -60,6 +60,12 @@ Cypress.Commands.add(
     // it can look it up to use
     cmd.attributes.ifSubject = subject
 
+    // let's be friendly and if the user
+    // wrote "if exists" just go with it
+    if (assertion === 'exists') {
+      assertion = 'exist'
+    }
+
     let hasSubject = Boolean(subject)
     let assertionsPassed = true
 
