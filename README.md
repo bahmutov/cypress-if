@@ -33,6 +33,15 @@ Include this package in your spec or support file
 import 'cypress-if'
 ```
 
+### Cypress version support
+
+We are playing with Cypress internals, thus some versions might not be compatible
+
+| Cypress version | cypress-if version |
+| --------------- | ------------------ |
+| < v12.0.0       | v1                 |
+| >= v12.6.0      | v2                 |
+
 ### Types
 
 Types for the `.if()` and `.else()` commands are described in the include typescript file [src/index.d.ts](./src/index.d.ts) file. If you need intellisense, include the type for this package. For example,
