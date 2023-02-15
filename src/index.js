@@ -1,5 +1,19 @@
 const debug = require('debug')('cypress-if')
 
+// version check
+const [major, minor] = Cypress.version.split('.').map(Number)
+if (major >= 12) {
+  if (minor < 6) {
+    throw new Error(
+      [
+        'Cypress v12 before v12.6.0 does not support overwriting queries.',
+        'Please upgrade Cypress',
+        'See [cypress-if/issues/58](https://github.com/bahmutov/cypress-if/issues/58)',
+      ].join('\n'),
+    )
+  }
+}
+
 const isIfCommand = (cmd) =>
   cmd && cmd.attributes && cmd.attributes.name === 'if'
 
@@ -227,7 +241,8 @@ Cypress.Commands.add('finally', { prevSubject: true }, (subject) => {
   }
 })
 
-Cypress.Commands.overwrite('get', function (get, selector, options) {
+// https://docs.cypress.io/api/cypress-api/custom-queries
+Cypress.Commands.overwriteQuery('get', function (get, selector, options) {
   // can we see the next command already?
   const cmd = cy.state('current')
   debug(cmd)
@@ -244,21 +259,37 @@ Cypress.Commands.overwrite('get', function (get, selector, options) {
       }
     }
     // disable the built-in assertion
-    return get(selector, options).then(
-      (getResult) => {
-        debug('internal get result', getResult)
-        return getResult
-      },
-      (noResult) => {
-        debug('no get result', noResult)
-      },
-    )
+    const getResult = get.call(this, selector, options)
+    return (subject) => {
+      return getResult(subject)
+    }
+    if (getResult) {
+      debug('internal get result', getResult)
+      return getResult
+    } else {
+      debug('no get result', noResult)
+      return {}
+    }
+    // console.log(r)
+    // return get.call(this, selector, options).then(
+    //   (getResult) => {
+    //     debug('internal get result', getResult)
+    //     return getResult
+    //   },
+    //   (noResult) => {
+    //     debug('no get result', noResult)
+    //   },
+    // )
   }
 
-  return get(selector, options)
+  // return get.call(this, selector, options)
+  const getResult = get.call(this, selector, options)
+  return (subject) => {
+    return getResult(subject)
+  }
 })
 
-Cypress.Commands.overwrite(
+Cypress.Commands.overwriteQuery(
   'contains',
   function (contains, prevSubject, selector, text, options) {
     debug('cy.contains arguments number', arguments.length)
@@ -289,7 +320,7 @@ Cypress.Commands.overwrite(
   },
 )
 
-Cypress.Commands.overwrite(
+Cypress.Commands.overwriteQuery(
   'find',
   function (find, prevSubject, selector, options) {
     debug('cy.find args', { prevSubject, selector, options })
