@@ -261,15 +261,17 @@ Cypress.Commands.overwriteQuery('get', function (get, selector, options) {
     // disable the built-in assertion
     const getResult = get.call(this, selector, options)
     return (subject) => {
-      return getResult(subject)
+      const s = getResult(subject)
+      console.log(s)
+      return s
     }
-    if (getResult) {
-      debug('internal get result', getResult)
-      return getResult
-    } else {
-      debug('no get result', noResult)
-      return {}
-    }
+    // if (getResult) {
+    //   debug('internal get result', getResult)
+    //   return getResult
+    // } else {
+    //   debug('no get result', noResult)
+    //   return {}
+    // }
     // console.log(r)
     // return get.call(this, selector, options).then(
     //   (getResult) => {

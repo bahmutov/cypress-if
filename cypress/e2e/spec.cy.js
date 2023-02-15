@@ -12,16 +12,16 @@ it('finds the li elements', () => {
   cy.get('button#load').if().should('have.text', 'Load').click()
 })
 
+it.only('skips the click if the button does not exist', () => {
+  cy.visit('cypress/index.html')
+  // if the button exists, click on it
+  cy.get('button#does-not-exist').if().click()
+})
+
 it('skips if the element does not exit', () => {
   cy.visit('cypress/index.html')
   // if the list exists, it should have three items
   cy.get('#veggies li').if().should('have.length', 3)
-})
-
-it('skips the click if the button does not exist', () => {
-  cy.visit('cypress/index.html')
-  // if the button exists, click on it
-  cy.get('button#does-not-exist').if().click()
 })
 
 it('clicks on the button if it is visible', () => {

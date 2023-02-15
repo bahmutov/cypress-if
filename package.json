@@ -28,5 +28,8 @@
   },
   "dependencies": {
     "debug": "^4.3.4"
+  },
+  "peerDependencies": {
+    "cypress": ">=12.6.0"
   }
 }
