@@ -319,21 +319,23 @@ Cypress.Commands.overwrite('task', function (task, args, options) {
   debug('cy.task %o', { args, options })
 
   const cmd = cy.state('current')
-  debug(cmd)
-  const next = cmd.attributes.next
+  if (cmd) {
+    debug(cmd)
+    const next = cmd.attributes.next
 
-  if (next && next.attributes.name === 'if') {
-    // disable the built-in assertion
-    return task(args, options).then(
-      (taskResult) => {
-        debug('internal task result', taskResult)
-        return taskResult
-      },
-      (error) => {
-        debug('task error', error)
-        cmd.attributes.error = error
-      },
-    )
+    if (next && next.attributes.name === 'if') {
+      // disable the built-in assertion
+      return task(args, options).then(
+        (taskResult) => {
+          debug('internal task result', taskResult)
+          return taskResult
+        },
+        (error) => {
+          debug('task error', error)
+          cmd.attributes.error = error
+        },
+      )
+    }
   }
 
   return task(args, options)
