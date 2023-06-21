@@ -227,7 +227,7 @@ Cypress.Commands.add('finally', { prevSubject: true }, (subject) => {
   }
 })
 
-Cypress.Commands.overwrite('get', function (get, selector, options) {
+Cypress.Commands.overwriteQuery('get', function (get, selector, options) {
   // can we see the next command already?
   const cmd = cy.state('current')
   debug(cmd)
@@ -236,7 +236,7 @@ Cypress.Commands.overwrite('get', function (get, selector, options) {
   if (isIfCommand(next)) {
     if (selector.startsWith('@')) {
       try {
-        return get(selector, options)
+        return get.call(this, selector, options)
       } catch (e) {
         if (e.message.includes('could not find a registered alias for')) {
           return undefined
@@ -244,21 +244,24 @@ Cypress.Commands.overwrite('get', function (get, selector, options) {
       }
     }
     // disable the built-in assertion
-    return get(selector, options).then(
-      (getResult) => {
-        debug('internal get result', getResult)
-        return getResult
-      },
-      (noResult) => {
-        debug('no get result', noResult)
-      },
-    )
+    const getFn = get.call(this, selector, options)
+    return (subject) => {
+      return getFn(subject)
+    }
+    //   (getResult) => {
+    //     debug('internal get result', getResult)
+    //     return getResult
+    //   },
+    //   (noResult) => {
+    //     debug('no get result', noResult)
+    //   },
+    // )
   }
 
-  return get(selector, options)
+  return get.call(this, selector, options)
 })
 
-Cypress.Commands.overwrite(
+Cypress.Commands.overwriteQuery(
   'contains',
   function (contains, prevSubject, selector, text, options) {
     debug('cy.contains arguments number', arguments.length)
@@ -289,7 +292,7 @@ Cypress.Commands.overwrite(
   },
 )
 
-Cypress.Commands.overwrite(
+Cypress.Commands.overwriteQuery(
   'find',
   function (find, prevSubject, selector, options) {
     debug('cy.find args', { prevSubject, selector, options })

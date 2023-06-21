@@ -18,8 +18,8 @@
   "author": "Gleb Bahmutov <gleb.bahmutov@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "cypress": "11.2.0",
-    "prettier": "^2.7.1",
+    "cypress": "12.15.0",
+    "prettier": "^2.8.8",
     "semantic-release": "^19.0.5"
   },
   "repository": {
