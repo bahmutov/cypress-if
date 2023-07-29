@@ -227,91 +227,94 @@ Cypress.Commands.add('finally', { prevSubject: true }, (subject) => {
   }
 })
 
-Cypress.Commands.overwrite('get', function (get, selector, options) {
+Cypress.Commands.overwriteQuery('get', function (get, selector, options) {
   // can we see the next command already?
   const cmd = cy.state('current')
   debug(cmd)
   const next = cmd.attributes.next
 
+  const innerFn = get.call(this, selector, options)
+
   if (isIfCommand(next)) {
     if (selector.startsWith('@')) {
-      try {
-        return get(selector, options)
-      } catch (e) {
-        if (e.message.includes('could not find a registered alias for')) {
-          return undefined
+      return subject => {
+        try {
+          return innerFn(subject);
+        } catch (e) {
+          if (e.message.includes('could not find a registered alias for')) {
+            return undefined
+          }
         }
-      }
+      };
     }
     // disable the built-in assertion
-    return get(selector, options).then(
-      (getResult) => {
-        debug('internal get result', getResult)
-        return getResult
-      },
-      (noResult) => {
-        debug('no get result', noResult)
-      },
-    )
+    return subject => {
+      const res = innerFn(subject);
+      if (res.length) {
+          debug('internal get result', res)
+          return res;
+      }
+      debug('no get result')
+    };
   }
 
-  return get(selector, options)
+  return subject => innerFn(subject);
 })
 
-Cypress.Commands.overwrite(
+Cypress.Commands.overwriteQuery(
   'contains',
-  function (contains, prevSubject, selector, text, options) {
+  function (contains, selector, text, options) {
     debug('cy.contains arguments number', arguments.length)
-    if (arguments.length === 3) {
+    if (arguments.length === 2) {
       text = selector
       selector = undefined
     }
-    debug('cy.contains args', { prevSubject, selector, text, options })
+    debug('cy.contains args', { selector, text, options })
 
     const cmd = cy.state('current')
     debug(cmd)
     const next = cmd.attributes.next
+    const innerFn = contains.call(this, selector, text, options)
 
-    if (next && next.attributes.name === 'if') {
+    if (isIfCommand(next)) {
       // disable the built-in assertion
-      return contains(prevSubject, selector, text, options).then(
-        (getResult) => {
-          debug('internal contains result', getResult)
-          return getResult
-        },
-        (noResult) => {
-          debug('no contains result', noResult)
-        },
-      )
+      return subject => {
+        const res = innerFn(subject);
+        if (res.length) {
+          debug('internal contains result', res)
+          return res
+        }
+        debug('no contains result')
+      };
     }
 
-    return contains(prevSubject, selector, text, options)
+    return subject => innerFn(subject);
   },
 )
 
-Cypress.Commands.overwrite(
+Cypress.Commands.overwriteQuery(
   'find',
-  function (find, prevSubject, selector, options) {
-    debug('cy.find args', { prevSubject, selector, options })
+  function (find, selector, options) {
+    debug('cy.find args', { selector, options })
 
     const cmd = cy.state('current')
     debug(cmd)
     const next = cmd.attributes.next
+    const innerFn = find.call(this, selector, options)
 
-    if (next && next.attributes.name === 'if') {
+    if (isIfCommand(next)) {
       // disable the built-in assertion
-      return find(prevSubject, selector, options).then(
-        (getResult) => {
-          debug('internal cy.find result', getResult)
-          return getResult
-        },
-        (noResult) => {
-          debug('no cy.find result', noResult)
-        },
-      )
+      return subject => {
+        const res = innerFn(subject);
+        if (res.length) {
+          debug('internal cy.find result', res)
+          return res;
+        }
+        debug('no cy.find result')
+      };
     }
 
-    return find(prevSubject, selector, options)
+    return subject => innerFn(subject);
   },
 )
 
@@ -323,7 +326,7 @@ Cypress.Commands.overwrite('task', function (task, args, options) {
     debug(cmd)
     const next = cmd.attributes.next
 
-    if (next && next.attributes.name === 'if') {
+    if (isIfCommand(next)) {
       // disable the built-in assertion
       return task(args, options).then(
         (taskResult) => {
