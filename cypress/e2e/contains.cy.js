@@ -4,7 +4,7 @@
 import '../../src'
 
 describe('cy.contains support', () => {
-  before(() => {
+  beforeEach(() => {
     cy.visit('cypress/index.html')
   })
 
