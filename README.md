@@ -14,6 +14,7 @@ Tested with `cy.get`, `cy.contains`, `cy.find`, `.then`, `.within` commands in C
   - [Lesson d3: Ensure the settings dialog is open](https://cypress.tips/courses/cypress-plugins/lessons/d3)
   - [Lesson d4: How to avoid conditional test logic](https://cypress.tips/courses/cypress-plugins/lessons/d4)
   - [Lesson d5: Create a new user if the test cannot log in](https://cypress.tips/courses/cypress-plugins/lessons/d5)
+  - [Lesson n5: Pagination using cypress-if](https://cypress.tips/courses/cypress-plugins/lessons/n5)
 
 ## ⚠️ Warning
 
