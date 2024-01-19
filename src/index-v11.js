@@ -289,6 +289,29 @@ Cypress.Commands.overwrite(
   },
 )
 
+Cypress.Commands.overwrite('not', function (notCommand, prevSubject, selector) {
+  debug('cy.not args', { prevSubject, selector })
+
+  const cmd = cy.state('current')
+  debug(cmd)
+  const next = cmd.attributes.next
+
+  if (next && next.attributes.name === 'if') {
+    // disable the built-in assertion
+    return notCommand(prevSubject, selector).then(
+      (getResult) => {
+        debug('internal cy.not result', getResult)
+        return getResult
+      },
+      (noResult) => {
+        debug('no cy.not result', noResult)
+      },
+    )
+  }
+
+  return notCommand(prevSubject, selector, text, options)
+})
+
 Cypress.Commands.overwrite(
   'find',
   function (find, prevSubject, selector, options) {
