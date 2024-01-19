@@ -146,6 +146,14 @@ cy.get('#enrolled')
   .check()
 ```
 
+You can print a message if the `ELSE` branch is taken
+
+```js
+cy.get('...').if('...').else().log('a message')
+// same as
+cy.get('...').if('...').else('a message')
+```
+
 ## Multiple commands
 
 Sometimes it makes sense to place the "if" or "else" commands into `.then()` block

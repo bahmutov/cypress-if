@@ -6,10 +6,16 @@ import '../../src'
 describe('else branch', () => {
   it('takes the if branch', () => {
     cy.wrap(42).if('equal', 42).log('if branch').else().log('else branch')
+    cy.log('**built-in log**')
+    cy.wrap(42).if('equal', 42).log('if branch').else('else branch')
   })
 
   it('takes the else branch', () => {
     cy.wrap(42).if('equal', 1).log('if branch').else().log('else branch')
+    cy.log('**built-in log**')
+    cy.wrap(42).if('equal', 1).log('if branch').else('else branch')
+    cy.log('**prints numbers**')
+    cy.wrap(42).if('equal', 1).log('if branch').else(42)
   })
 
   it('can have multiple if-else', () => {

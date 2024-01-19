@@ -46,12 +46,19 @@ declare namespace Cypress {
      * execute if the previous `.if()` command skipped
      * the "IF" branch. Note: `.if()` passes its subject
      * to the `.else()`
+     * You can also print a message if the ELSE branch
+     * is taken
+     * @param message Message to print to the console. Optional.
      * @example
      *  cy.get('checkox#agree')
      *    .if('checked').log('Already agreed')
      *    .else().check()
+     * @example
+     *  cy.get('...')
+     *    .if('not.visible').log('Not visible')
+     *    .else('visible')
      */
-    else(): Chainable<any>
+    else(message?: any): Chainable<any>
 
     /**
      * Finishes if/else commands and continues
