@@ -206,11 +206,14 @@ if (major < 12) {
     },
   )
 
-  Cypress.Commands.add('else', { prevSubject: true }, (subject) => {
+  Cypress.Commands.add('else', { prevSubject: true }, (subject, text) => {
     debug('else command, subject', subject)
     if (typeof subject === 'undefined') {
       // find the subject from the "if()" before
       subject = findMyIfSubject(cy.state('current').attributes)
+    }
+    if (typeof text !== undefined) {
+      cy.log(text)
     }
     if (subject) {
       cy.wrap(subject, { log: false })
