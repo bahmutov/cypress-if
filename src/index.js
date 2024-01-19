@@ -359,4 +359,27 @@ if (major < 12) {
     )
     throw e
   })
+
+  Cypress.Commands.overwriteQuery('not', function (notCommand, selector) {
+    debug('cy.not args', { selector })
+
+    const cmd = cy.state('current')
+    debug(cmd)
+    const next = cmd.attributes.next
+    const innerFn = notCommand.call(this, selector)
+
+    if (isIfCommand(next)) {
+      // disable the built-in assertion
+      return (subject) => {
+        const res = innerFn(subject)
+        if (res.length) {
+          debug('internal not result', res)
+          return res
+        }
+        debug('no not result')
+      }
+    }
+
+    return (subject) => innerFn(subject)
+  })
 }
