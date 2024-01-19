@@ -18,7 +18,7 @@ Tested with `cy.get`, `cy.contains`, `cy.find`, `.then`, `.within` commands in C
 
 ## ⚠️ Warning
 
-In general, Cypress team considers [conditional testing an anti-pattern](https://on.cypress.io/conditional-testing). Thus `cypress-if` should be used only if the test really cannot deterministically execute its steps.
+In general, Cypress team considers [conditional testing an anti-pattern](https://on.cypress.io/conditional-testing). Thus `cypress-if` should be used only if the test really cannot deterministically execute its steps. You can also read my [conditional testing](https://glebbahmutov.com/cypress-examples/recipes/conditional-testing.html) examples.
 
 ## No xpath support
 

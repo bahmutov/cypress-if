@@ -58,3 +58,21 @@ it('uses exists as an alias to exist', () => {
   cy.get('@if').should('have.been.calledOnce')
   cy.get('@else').should('not.have.been.called')
 })
+
+it('supports cy.not', () => {
+  cy.log('**IF path**')
+  cy.get('#fruits li')
+    .not(':odd')
+    .if('exists')
+    .log('found even')
+    .else()
+    .raise('it is odd')
+
+  cy.log('**ELSE path**')
+  cy.get('#fruits li')
+    .not('li')
+    .if('exists')
+    .raise('cy.not is not supported')
+    .else()
+    .log('cy.not is supported')
+})
