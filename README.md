@@ -42,21 +42,16 @@ Include this package in your spec or support file
 import 'cypress-if'
 ```
 
-### Types
+### TypeScript
 
-Types for the `.if()` and `.else()` commands are described in the include typescript file [src/index.d.ts](./src/index.d.ts) file. If you need intellisense, include the type for this package. For example,
-
-```js
-// your spec file
-/// <reference types="cypress-if" />
-```
-
-If it does not work, and TS still complains about unknown command `.if`, then do the following trick and move on:
-
-```js
-cy.get(...)
-  // @ts-ignore
-  .if()
+If you're using TypeScript, you have to tell it about the extension of the `Chainable` class by adding this library to your `tsconfig.json`:
+```jsonc
+"compilerOptions": {
+  "types": [
+    "cypress",
+    "cypress-if" // add this line
+  ]
+}
 ```
 
 ## Use
