@@ -1,0 +1,20 @@
+<html>
+  <body>
+    <div>
+      <p>
+        The button might be disabled
+        <button id="btn">Click Me</button>
+      </p>
+    </div>
+    <script>
+      const btn = document.getElementById('btn')
+      btn.addEventListener('click', function () {
+        btn.innerText = 'Clicked'
+      })
+
+      if (Math.random() < 0.5) {
+        btn.setAttribute('disabled', 'disabled')
+      }
+    </script>
+  </body>
+</html>
