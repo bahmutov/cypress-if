@@ -9,6 +9,7 @@ Tested with `cy.get`, `cy.contains`, `cy.find`, `.then`, `.within` commands in C
 - 📺 [Introduction To Using cypress-if Plugin to Write Conditional Cypress Commands](https://youtu.be/TVwU0OvrVUA)
 - 📺 [Confirm Cypress Command Execution Order Using Sinon.js Spies](https://youtu.be/RTzJu44yAc8)
 - 📺 [cypress-if Plugin Supports Cypress v12+: Close The Popup Dialog If It Is Visible](https://youtu.be/PLP5Bq7KHTk)
+- 📺 [Click Button If Enabled Using cypress-if And cypress-await Plugins](https://youtu.be/H04FSnH-6U0)
 - 🎓 Covered in my [Cypress Plugins course](https://cypress.tips/courses/cypress-plugins)
   - [Lesson d1: Write conditional commands using cypress-if](https://cypress.tips/courses/cypress-plugins/lessons/d1)
   - [Lesson d2: Conditionally clear the items in a TodoMVC application](https://cypress.tips/courses/cypress-plugins/lessons/d2)
