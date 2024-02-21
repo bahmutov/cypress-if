@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 // @ts-check
 
+// https://github.com/bahmutov/cypress-if
 import '../../src'
 
 it('clicks the button if enabled', () => {
