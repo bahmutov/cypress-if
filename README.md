@@ -19,6 +19,8 @@ Tested with `cy.get`, `cy.contains`, `cy.find`, `.then`, `.within` commands in C
   - [Lesson d5: Create a new user if the test cannot log in](https://cypress.tips/courses/cypress-plugins/lessons/d5)
   - [Lesson n5: Pagination using cypress-if](https://cypress.tips/courses/cypress-plugins/lessons/n5)
   - [Lesson d6: Expand a section based on its attribute value](https://cypress.tips/courses/cypress-plugins/lessons/n6)
+- 🎓 Used in my course [Visual Testing With Cypress](https://cypress.tips/courses/visual-testing)
+  - [Bonus 04: Hide an element if it is visible](https://cypress.tips/courses/visual-testing/lessons/bonus04)
 
 ## ⚠️ Warning
 
