@@ -11,7 +11,7 @@ type PredicateFn = (x: any) => boolean
 type AssertionFn = (x: any) => void
 
 declare namespace Cypress {
-  interface Chainable {
+  interface Chainable<Subject> {
     /**
      * Child `.if()` command to start an optional chain
      * depending on the subject
@@ -21,7 +21,7 @@ declare namespace Cypress {
      *  cy.get('#close').if('visible').click()
      *  cy.wrap(1).if('equal', 1).should('equal', 1)
      */
-    if(assertion?: string, value?: any): Chainable<any>
+    if(assertion?: string, value?: any): Chainable<Subject>
 
     /**
      * Child `.if()` command to start an optional chain
@@ -30,7 +30,7 @@ declare namespace Cypress {
      * @example
      *  cy.wrap(1).if(n => n % 2 === 0)...
      */
-    if(callback: PredicateFn): Chainable<any>
+    if(callback: PredicateFn): Chainable<Subject>
 
     /**
      * Child `.if()` command to start an optional chain
@@ -39,7 +39,7 @@ declare namespace Cypress {
      * @example
      *  cy.wrap(1).if(n => expect(n).to.equal(1))...
      */
-    if(callback: AssertionFn): Chainable<any>
+    if(callback: AssertionFn): Chainable<Subject>
 
     /**
      * Creates new chain of commands that only
@@ -58,7 +58,7 @@ declare namespace Cypress {
      *    .if('not.visible').log('Not visible')
      *    .else('visible')
      */
-    else(message?: any): Chainable<any>
+    else(message?: any): Chainable<Subject>
 
     /**
      * Finishes if/else commands and continues
@@ -70,7 +70,7 @@ declare namespace Cypress {
      *    .else().log('already checked')
      *    .finally().should('be.checked')
      */
-    finally(): Chainable<any>
+    finally(): Chainable<Subject>
 
     /**
      * A simple way to throw an error
