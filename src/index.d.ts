@@ -21,7 +21,11 @@ declare namespace Cypress {
      *  cy.get('#close').if('visible').click()
      *  cy.wrap(1).if('equal', 1).should('equal', 1)
      */
-    if(this: Chainable<Subject>, assertion?: string, value?: any): Chainable<Subject>
+    if(
+      this: Chainable<Subject>,
+      assertion?: string,
+      value?: any,
+    ): Chainable<Subject>
 
     /**
      * Child `.if()` command to start an optional chain
