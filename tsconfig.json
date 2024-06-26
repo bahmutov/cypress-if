@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "lib": ["es6", "DOM"],
+    "types": ["cypress"],
+    "noEmit": true,
+    "allowJs": true
+  },
+  "include": ["src/index-v11.js", "src/index.d.ts", "cypress/**/*.js"]
+}
