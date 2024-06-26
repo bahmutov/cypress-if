@@ -27,7 +27,7 @@ it('works if nothing is attached', () => {
   cy.wrap(1).if('equal', 1)
   cy.wrap(1)
     .if('not.equal', 1)
-    .then((subject) => {
+    .then((/** @type number */ subject) => {
       expect(subject).to.not.equal(1)
     })
 })

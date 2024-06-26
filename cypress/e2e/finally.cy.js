@@ -27,6 +27,9 @@ describe('finally', () => {
       .else()
       .then(cy.spy().as('else'))
       .finally()
+      .then((/** @type number */ subject) => {
+        expect(subject, 'subject').to.equal(1)
+      })
       .should('equal', 1)
     cy.get('@if').should('have.been.calledOnce')
     cy.get('@else').should('not.be.called')
