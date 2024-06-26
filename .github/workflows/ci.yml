@@ -10,6 +10,9 @@ jobs:
       - name: Run Cypress tests 🧪
         # https://github.com/cypress-io/github-action
         uses: cypress-io/github-action@v6
+        with:
+          # check if the types agree
+          build: npm run types
 
   # there was a breaking change under the hood in Cypress v11.1.0
   # so make sure this plugin still works for older versions
