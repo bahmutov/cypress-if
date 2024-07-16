@@ -260,7 +260,7 @@ if (major < 12) {
       // disable the built-in assertion
       return (subject) => {
         const res = innerFn(subject)
-        if (res.length) {
+        if (res && res.length) {
           debug('internal get result', res)
           return res
         }
@@ -290,7 +290,7 @@ if (major < 12) {
         // disable the built-in assertion
         return (subject) => {
           const res = innerFn(subject)
-          if (res.length) {
+          if (res && res.length) {
             debug('internal contains result', res)
             return res
           }
@@ -314,7 +314,7 @@ if (major < 12) {
       // disable the built-in assertion
       return (subject) => {
         const res = innerFn(subject)
-        if (res.length) {
+        if (res && res.length) {
           debug('internal cy.find result', res)
           return res
         }
@@ -375,7 +375,7 @@ if (major < 12) {
       // disable the built-in assertion
       return (subject) => {
         const res = innerFn(subject)
-        if (res.length) {
+        if (res && res.length) {
           debug('internal not result', res)
           return res
         }
