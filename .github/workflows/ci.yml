@@ -45,7 +45,8 @@ jobs:
         with:
           working-directory: cypress-v9
 
-      - uses: actions/upload-artifact@v2
+      # https://github.com/actions/upload-artifact
+      - uses: actions/upload-artifact@v4
         name: Store any v9 screenshots 🖼
         if: failure()
         with:
