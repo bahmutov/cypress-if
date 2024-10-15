@@ -5,8 +5,10 @@ import '../../src'
 it('submits the terms forms', () => {
   cy.visit('cypress/terms.html')
   cy.get('#agreed')
+    .should('be.visible')
     .if('not.checked')
     .click()
+    .log('clicked the checkbox')
     .else()
     .log('The user already agreed')
   cy.get('button#submit').click()

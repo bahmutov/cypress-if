@@ -10,10 +10,10 @@ describe('has attribute assertion', () => {
 
   it('has attribute present', () => {
     cy.get('#submit')
-      .if('have.attr', 'disabled')
-      .log('button is disabled')
+      .if('have.attr', 'id')
+      .log('button has an id')
       .else()
-      .raise(new Error('button should be disabled'))
+      .raise(new Error('button should have an id'))
   })
 
   it(
