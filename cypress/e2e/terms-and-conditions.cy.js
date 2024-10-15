@@ -5,6 +5,7 @@ import '../../src'
 it('submits the terms forms', () => {
   cy.visit('cypress/terms.html')
   cy.get('#agreed')
+  cy.get('#agreed')
     .should('be.visible')
     .if('not.checked')
     .click()
