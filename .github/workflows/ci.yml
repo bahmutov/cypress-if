@@ -14,6 +14,21 @@ jobs:
           # check if the types agree
           build: npm run types
 
+      # https://github.com/actions/upload-artifact
+      - uses: actions/upload-artifact@v4
+        name: Store any error screenshots 🖼
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+
+      - uses: actions/upload-artifact@v4
+        name: Store any videos 🖼
+        if: failure()
+        with:
+          name: cypress-videos
+          path: cypress/videos
+
   # there was a breaking change under the hood in Cypress v11.1.0
   # so make sure this plugin still works for older versions
   test-cypress-v11-0:
