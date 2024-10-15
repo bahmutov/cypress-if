@@ -26,6 +26,11 @@
       } else {
         console.log('checked = false')
       }
+
+      // set an attribute after a delay
+      setTimeout(() => {
+        document.getElementById('submit').setAttribute('data-X', '123')
+      }, 1000)
     </script>
   </body>
 </html>

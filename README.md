@@ -268,6 +268,17 @@ cy.wrap(42).if('not.null') // takes IF path
 
 See spec [null.cy.js](./cypress/e2e/null.cy.js)
 
+## Multiple values
+
+Some assertions need two values, for example:
+
+```js
+// only checks the presence of the "data-x" HTML attribute
+.if('have.attr', 'data-x')
+// checks if the "data-x" attribute present AND has value "123"
+.if('have.attr', 'data-x', '123')
+```
+
 ## raise
 
 This plugin includes a utility custom command `cy.raise` that lets you conveniently throw an error.
