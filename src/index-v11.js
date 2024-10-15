@@ -98,6 +98,8 @@ Cypress.Commands.add(
               } else if (typeof assertionValue1 !== 'undefined') {
                 assertionReduced =
                   assertionReduced[assertionPart](assertionValue1)
+              } else {
+                assertionReduced = assertionReduced[assertionPart]
               }
             } else {
               assertionReduced = assertionReduced[assertionPart]

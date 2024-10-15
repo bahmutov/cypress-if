@@ -102,6 +102,8 @@ if (major < 12) {
                 } else if (typeof assertionValue1 !== 'undefined') {
                   assertionReduced =
                     assertionReduced[assertionPart](assertionValue1)
+                } else {
+                  assertionReduced = assertionReduced[assertionPart]
                 }
               } else {
                 assertionReduced = assertionReduced[assertionPart]
