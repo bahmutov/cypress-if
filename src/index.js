@@ -54,7 +54,7 @@ if (major < 12) {
   Cypress.Commands.add(
     'if',
     { prevSubject: true },
-    function (subject, assertion, assertionValue) {
+    function (subject, assertion, assertionValue1, assertionValue2) {
       const cmd = cy.state('current')
       debug('if', cmd.attributes, 'subject', subject, 'assertion?', assertion)
       debug('next command', cmd.next)
@@ -90,19 +90,33 @@ if (major < 12) {
             const parts = assertion.split('.')
             let assertionReduced = expect(subject).to
             parts.forEach((assertionPart, k) => {
-              if (
-                k === parts.length - 1 &&
-                typeof assertionValue !== 'undefined'
-              ) {
-                assertionReduced =
-                  assertionReduced[assertionPart](assertionValue)
+              if (k === parts.length - 1) {
+                if (
+                  typeof assertionValue1 !== 'undefined' &&
+                  typeof assertionValue2 !== 'undefined'
+                ) {
+                  assertionReduced = assertionReduced[assertionPart](
+                    assertionValue1,
+                    assertionValue2,
+                  )
+                } else if (typeof assertionValue1 !== 'undefined') {
+                  assertionReduced =
+                    assertionReduced[assertionPart](assertionValue1)
+                } else {
+                  assertionReduced = assertionReduced[assertionPart]
+                }
               } else {
                 assertionReduced = assertionReduced[assertionPart]
               }
             })
           } else {
-            if (typeof assertionValue !== 'undefined') {
-              expect(subject).to.be[assertion](assertionValue)
+            if (
+              typeof assertionValue1 !== 'undefined' &&
+              typeof assertionValue2 !== 'undefined'
+            ) {
+              expect(subject).to.be[assertion](assertionValue1, assertionValue2)
+            } else if (typeof assertionValue1 !== 'undefined') {
+              expect(subject).to.be[assertion](assertionValue1)
             } else {
               expect(subject).to.be[assertion]
             }

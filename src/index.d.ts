@@ -24,7 +24,8 @@ declare namespace Cypress {
     if(
       this: Chainable<Subject>,
       assertion?: string,
-      value?: any,
+      value1?: any,
+      value2?: any,
     ): Chainable<Subject>
 
     /**
