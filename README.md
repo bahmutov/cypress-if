@@ -48,10 +48,21 @@ import 'cypress-if'
 
 ### Types
 
-Types for the `.if()` and `.else()` commands are described in the include typescript file [src/index.d.ts](./src/index.d.ts) file. If you need intellisense, include the type for this package. For example,
+Types for the `.if()` and `.else()` commands are described in the include typescript file [src/index.d.ts](./src/index.d.ts) file. If you need intellisense, include the type for this package in your `tscofig.json`
+
+```jsonc
+"compilerOptions": {
+  "types": [
+    "cypress",
+    "cypress-if" // add this line
+  ]
+}
+```
+
+For JavaScript projects that cannot use `tsconfig.json` or `jscofig.json`, the special comment might do the trick:
 
 ```js
-// your spec file
+// your spec file "cypress/e2e/spec.cy.js" add this comment
 /// <reference types="cypress-if" />
 ```
 
