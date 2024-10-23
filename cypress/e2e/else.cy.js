@@ -18,6 +18,18 @@ describe('else branch', () => {
     cy.wrap(42).if('equal', 1).log('if branch').else(42)
   })
 
+  it('logs the else message', () => {
+    cy.spy(cy, 'log').as('log')
+    cy.wrap(true).if('false').else('else branch')
+    cy.get('@log').should('have.been.calledWith', 'else branch')
+  })
+
+  it('logs the default else message', () => {
+    cy.spy(cy, 'log').as('log')
+    cy.wrap(true).if('false').else()
+    cy.get('@log').should('not.have.been.called')
+  })
+
   it('can have multiple if-else', () => {
     cy.wrap(1)
       .if('equal', 2)
