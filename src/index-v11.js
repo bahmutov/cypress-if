@@ -220,7 +220,7 @@ Cypress.Commands.add('else', { prevSubject: true }, (subject, text) => {
     // find the subject from the "if()" before
     subject = findMyIfSubject(cy.state('current').attributes)
   }
-  if (typeof text !== undefined) {
+  if (typeof text !== 'undefined') {
     cy.log(text)
   }
   if (subject) {
