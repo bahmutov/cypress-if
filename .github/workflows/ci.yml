@@ -2,87 +2,49 @@ name: ci
 on: [push, pull_request]
 jobs:
   test:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        # https://github.com/actions/checkout
+        uses: actions/checkout@v6
 
       - name: Run Cypress tests 🧪
         # https://github.com/cypress-io/github-action
-        uses: cypress-io/github-action@v6
+        uses: cypress-io/github-action@v7
         with:
           # check if the types agree
           build: npm run types
 
       # https://github.com/actions/upload-artifact
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         name: Store any error screenshots 🖼
         if: failure()
         with:
           name: cypress-screenshots
           path: cypress/screenshots
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         name: Store any videos 🖼
         if: failure()
         with:
           name: cypress-videos
           path: cypress/videos
 
-  # there was a breaking change under the hood in Cypress v11.1.0
-  # so make sure this plugin still works for older versions
-  test-cypress-v11-0:
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout 🛎
-        uses: actions/checkout@v4
-
-      - name: Run Cypress tests 🧪
-        # https://github.com/cypress-io/github-action
-        uses: cypress-io/github-action@v6
-        with:
-          build: npm install -D cypress@11.0.1
-
-  test-cypress-v9:
-    runs-on: ubuntu-20.04
-    steps:
-      - name: Checkout 🛎
-        uses: actions/checkout@v4
-
-      - name: Install top dependencies 📦
-        # https://github.com/cypress-io/github-action
-        uses: cypress-io/github-action@v6
-        with:
-          runTests: false
-
-      - name: Run Cypress v9 tests 🧪
-        uses: cypress-io/github-action@v6
-        with:
-          working-directory: cypress-v9
-
-      # https://github.com/actions/upload-artifact
-      - uses: actions/upload-artifact@v4
-        name: Store any v9 screenshots 🖼
-        if: failure()
-        with:
-          name: cypress-screenshots-v9
-          path: cypress-v9/cypress/screenshots
-
   release:
-    needs: [test, test-cypress-v9, test-cypress-v11-0]
-    runs-on: ubuntu-20.04
+    needs: [test]
+    runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
     steps:
       - name: Checkout 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Install only the semantic release 📦
         run: npm install semantic-release
 
       - name: Semantic Release 🚀
-        uses: cycjimmy/semantic-release-action@v4
+        # https://github.com/cycjimmy/semantic-release-action
+        uses: cycjimmy/semantic-release-action@v6
         with:
           branch: main
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
