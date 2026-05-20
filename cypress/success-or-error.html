@@ -1,0 +1,38 @@
+<html>
+  <body>
+    <h1>Success or error</h1>
+    <button id="task">Run task</button>
+    <br /><br />
+    <script>
+      // when the user clicks on the task button, the app sleeps for 1 second
+      // then randomly either shows DIV with success message or DIV with error message
+      document.getElementById('task').addEventListener('click', () => {
+        // delete any existing success or error messages
+        const existingSuccess = document.getElementById('success')
+        if (existingSuccess) {
+          existingSuccess.remove()
+        }
+        const existingError = document.getElementById('error')
+        if (existingError) {
+          existingError.remove()
+        }
+
+        const isSuccess = Math.random() > 0.5
+        const timeout = isSuccess ? 2000 : 200
+        setTimeout(() => {
+          if (isSuccess) {
+            const successDiv = document.createElement('div')
+            successDiv.id = 'success'
+            successDiv.textContent = 'Task completed successfully!'
+            document.body.appendChild(successDiv)
+          } else {
+            const errorDiv = document.createElement('div')
+            errorDiv.id = 'error'
+            errorDiv.textContent = 'Task failed with an error.'
+            document.body.appendChild(errorDiv)
+          }
+        }, timeout)
+      })
+    </script>
+  </body>
+</html>

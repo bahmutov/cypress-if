@@ -11,6 +11,22 @@ type PredicateFn = (x: any) => boolean
 type AssertionFn = (x: any) => void
 
 declare namespace Cypress {
+  type DOMSelector = string
+  type MatchedCommandFn = string
+
+  interface SelectorMatchers {
+    [key: DOMSelector]: MatchedCommandFn
+  }
+
+  interface DependsValue {
+    selector: DOMSelector
+    elements: JQuery
+  }
+
+  interface Chainable<Subject = any> {
+    depends(matchers: SelectorMatchers): Chainable<DependsValue>
+  }
+
   interface Chainable<Subject> {
     /**
      * Child `.if()` command to start an optional chain
@@ -22,11 +38,11 @@ declare namespace Cypress {
      *  cy.wrap(1).if('equal', 1).should('equal', 1)
      */
     if(
-      this: Chainable<Subject>,
+      this: Chainable,
       assertion?: string,
       value1?: any,
       value2?: any,
-    ): Chainable<Subject>
+    ): Chainable
 
     /**
      * Child `.if()` command to start an optional chain
@@ -35,7 +51,7 @@ declare namespace Cypress {
      * @example
      *  cy.wrap(1).if(n => n % 2 === 0)...
      */
-    if(this: Chainable<Subject>, callback: PredicateFn): Chainable<Subject>
+    if(this: Chainable, callback: PredicateFn): Chainable
 
     /**
      * Child `.if()` command to start an optional chain
@@ -44,7 +60,7 @@ declare namespace Cypress {
      * @example
      *  cy.wrap(1).if(n => expect(n).to.equal(1))...
      */
-    if(this: Chainable<Subject>, callback: AssertionFn): Chainable<Subject>
+    if(this: Chainable, callback: AssertionFn): Chainable
 
     /**
      * Creates new chain of commands that only
@@ -55,7 +71,7 @@ declare namespace Cypress {
      * is taken
      * @param message Message to print to the console. Optional.
      * @example
-     *  cy.get('checkox#agree')
+     *  cy.get('checkbox#agree')
      *    .if('checked').log('Already agreed')
      *    .else().check()
      * @example
@@ -63,7 +79,7 @@ declare namespace Cypress {
      *    .if('not.visible').log('Not visible')
      *    .else('visible')
      */
-    else(this: Chainable<Subject>, message?: any): Chainable<Subject>
+    else(this: Chainable, message?: any): Chainable
 
     /**
      * Finishes if/else commands and continues
@@ -75,7 +91,7 @@ declare namespace Cypress {
      *    .else().log('already checked')
      *    .finally().should('be.checked')
      */
-    finally(this: Chainable<Subject>): Chainable<Subject>
+    finally(this: Chainable): Chainable
 
     /**
      * A simple way to throw an error
@@ -84,6 +100,6 @@ declare namespace Cypress {
      *    .if('not.have.length', 3)
      *    .raise('wrong number of todo items')
      */
-    raise(x: string | Error): Chainable<void>
+    raise(x: string | Error): Chainable
   }
 }
