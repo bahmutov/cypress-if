@@ -12,7 +12,7 @@ type AssertionFn = (x: any) => void
 
 declare namespace Cypress {
   type DOMSelector = string
-  type MatchedCommandFn = string
+  type MatchedCommandFn = string | ((elements: JQuery) => void)
 
   interface SelectorMatchers {
     [key: DOMSelector]: MatchedCommandFn
@@ -30,10 +30,31 @@ declare namespace Cypress {
      * with the elements. Makes it easy to wait for "success or failure" elements
      * and take an action depending on the found result.
      *
-     * @example // Simple case: log a message depending on success or error
+     * @example
+     *  ```js
+     *  // Simple case: log a message depending on success or error
      *  cy.depends({
      *    '#success': 'Success!',
      *    '#error': 'Error!',
+     *  })
+     *  ```
+     *
+     * @example
+     *  // Run commands with the matched elements
+     *  cy.depends({
+     *    '#success': ($el) => {
+     *      expect($el, 'success')
+     *        .to.have.length(1)
+     *        .and.to.have.text('Task completed successfully!')
+     *      cy.log('Success path')
+     *    },
+     *    '#error': ($el) => {
+     *      expect($el, 'error')
+     *        .to.have.length(1)
+     *        .and.to.have.text('Task failed with an error.')
+     *      cy.log('Error path')
+     *    },
+     *    '#timeout': 'Timeout!',
      *  })
      */
     depends<M extends SelectorMatchers>(matchers: M): Chainable

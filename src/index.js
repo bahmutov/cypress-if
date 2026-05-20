@@ -72,6 +72,13 @@ if (major < 12) {
               elements: $el,
             }
           })
+        } else if (Cypress._.isFunction(commandFn)) {
+          const matchedElements = $elements.filter(firstMatchedSelector)
+          return commandFn(matchedElements)
+        } else {
+          throw new Error(
+            `cy.depends() command for selector "${firstMatchedSelector}" must be a string or a function`,
+          )
         }
       } else {
         throw new Error(
