@@ -5,5 +5,10 @@
     "noEmit": true,
     "allowJs": true
   },
-  "include": ["src/index-v11.js", "src/index.d.ts", "cypress/**/*.js"]
+  "include": [
+    "src/index-v11.js",
+    "src/index.d.ts",
+    "cypress/**/*.js",
+    "cypress/e2e/*.cy.ts"
+  ]
 }
