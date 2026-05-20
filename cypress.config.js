@@ -1,6 +1,7 @@
 const { defineConfig } = require('cypress')
 
 module.exports = defineConfig({
+  allowCypressEnv: false,
   e2e: {
     experimentalRunAllSpecs: true,
     fixturesFolder: false,

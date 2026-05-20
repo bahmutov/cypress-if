@@ -50,6 +50,37 @@ if (major < 12) {
     return cy.state('subject')
   }
 
+  // cy.depends command
+  Cypress.Commands.add('depends', function (matchers) {
+    const combinedSelector = Object.keys(matchers).join(', ')
+    cy.get(combinedSelector, { log: true }).then(($elements) => {
+      const firstMatchedSelector = Object.keys(matchers).find((selector) =>
+        $elements.is(selector),
+      )
+      debug('depends() matched selector', firstMatchedSelector)
+      if (firstMatchedSelector) {
+        const commandFn = matchers[firstMatchedSelector]
+        debug(
+          'depends() executing command for selector "%s"',
+          firstMatchedSelector,
+        )
+        if (typeof commandFn === 'string') {
+          cy.log(commandFn)
+          return cy.get(firstMatchedSelector, { log: false }).then(($el) => {
+            return {
+              selector: firstMatchedSelector,
+              elements: $el,
+            }
+          })
+        }
+      } else {
+        throw new Error(
+          `cy.depends() could not find any of the selectors: ${combinedSelector}`,
+        )
+      }
+    })
+  })
+
   // cy.if command
   Cypress.Commands.add(
     'if',

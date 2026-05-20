@@ -304,6 +304,24 @@ cy.get('li').if('not.have.length', 3).raise('Wrong number of todos')
 cy.get('li').if('not.have.length', 3).raise(new Error('Wrong number of todos'))
 ```
 
+## cy.depends
+
+**WIP: use at your own risk**
+
+If you provide a list of matchers, find the first match with elements and executes an action depending on it. For now, the only action is logging a message. Yields the matched selector and the elements.
+
+```js
+cy.contains('button').click()
+// app could show success or failure
+cy.depends({
+  '#success': 'Success!',
+  '#error': 'Error!',
+})
+  // yields an object with matched selector
+  // and the matched elements
+  .should('have.keys', ['selector', 'elements'])
+```
+
 ## More examples
 
 Check out the spec files in [cypress/e2e](./cypress/e2e/) folder. If you still have a question, [open a GitHub issue](https://github.com/bahmutov/cypress-if/issues).
