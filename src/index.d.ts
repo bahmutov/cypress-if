@@ -23,8 +23,20 @@ declare namespace Cypress {
     elements: JQuery
   }
 
+  // prettier-ignore
   interface Chainable<Subject = any> {
-    depends(matchers: SelectorMatchers): Chainable<DependsValue>
+    /**
+     * Waits for all given selectors and then yields the first matched selector
+     * with the elements. Makes it easy to wait for "success or failure" elements
+     * and take an action depending on the found result.
+     *
+     * @example // Simple case: log a message depending on success or error
+     *  cy.depends({
+     *    '#success': 'Success!',
+     *    '#error': 'Error!',
+     *  })
+     */
+    depends<M extends SelectorMatchers>(matchers: M): Chainable
   }
 
   interface Chainable<Subject> {
