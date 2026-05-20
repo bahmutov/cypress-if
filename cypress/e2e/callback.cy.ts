@@ -4,7 +4,7 @@ import '../../src'
 
 describe('assertion callback function', () => {
   context('predicate', () => {
-    const isEven = (n) => n % 2 === 0
+    const isEven = (n: number) => n % 2 === 0
 
     it('if branch', () => {
       cy.wrap(42)
@@ -32,7 +32,7 @@ describe('assertion callback function', () => {
   })
 
   context('Chai assertion', () => {
-    const is42 = (n) => expect(n).to.equal(42)
+    const is42 = (n: number) => expect(n).to.equal(42)
 
     it('if branch', () => {
       cy.wrap(42)
