@@ -322,6 +322,26 @@ cy.depends({
   .should('have.keys', ['selector', 'elements'])
 ```
 
+You can run assertions and commands with just the matched elements (first match wins) by providing callbacks instead of strings
+
+```js
+cy.depends({
+  '#success': ($el) => {
+    expect($el, 'success')
+      .to.have.length(1)
+      .and.to.have.text('Task completed successfully!')
+    cy.log('Success path')
+  },
+  '#error': ($el) => {
+    expect($el, 'error')
+      .to.have.length(1)
+      .and.to.have.text('Task failed with an error.')
+    cy.log('Error path')
+  },
+  '#timeout': 'Timed out',
+})
+```
+
 ## More examples
 
 Check out the spec files in [cypress/e2e](./cypress/e2e/) folder. If you still have a question, [open a GitHub issue](https://github.com/bahmutov/cypress-if/issues).

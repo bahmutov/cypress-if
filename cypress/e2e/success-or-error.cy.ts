@@ -3,10 +3,12 @@
 import '../../src'
 
 describe('DOM matchers', { defaultCommandTimeout: 4_000 }, () => {
-  it('matches success or error', () => {
+  beforeEach(() => {
     cy.visit('cypress/success-or-error.html')
     cy.contains('h1', 'Success or error')
+  })
 
+  it('matches success or error', () => {
     cy.contains('button', 'Run task').click()
     cy.depends({
       '#success': 'Success!',
@@ -26,5 +28,23 @@ describe('DOM matchers', { defaultCommandTimeout: 4_000 }, () => {
           throw new Error(`Unexpected selector ${selector}`)
         }
       })
+  })
+
+  it.only('can run commands with matched elements', () => {
+    cy.contains('button', 'Run task').click()
+    cy.depends({
+      '#success': ($el) => {
+        expect($el, 'success')
+          .to.have.length(1)
+          .and.to.have.text('Task completed successfully!')
+        cy.log('Success path')
+      },
+      '#error': ($el) => {
+        expect($el, 'error')
+          .to.have.length(1)
+          .and.to.have.text('Task failed with an error.')
+        cy.log('Error path')
+      },
+    })
   })
 })
