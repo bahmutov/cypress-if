@@ -1,0 +1,14 @@
+<html>
+  <body>
+    <ul id="fruits"></ul>
+    <script>
+      const fruits = document.getElementById('fruits')
+      // randomly add 1, 2, or 3 items to the list
+      const items = ['Apples', 'Grapes', 'Kiwi']
+      const count = Math.floor(Math.random() * 3) + 1
+      for (let i = 0; i < count; i++) {
+        fruits.innerHTML += `<li>${items[i]}</li>`
+      }
+    </script>
+  </body>
+</html>

@@ -53,45 +53,48 @@ if (major < 12) {
   // cy.depends command
   Cypress.Commands.add('depends', function (matchers) {
     const combinedSelector = Object.keys(matchers).join(', ')
-    cy.get(combinedSelector, { log: true }).then(($elements) => {
-      const firstMatchedSelector = Object.keys(matchers).find((selector) =>
-        $elements.is(selector),
-      )
-      debug('depends() matched selector', firstMatchedSelector)
-      if (firstMatchedSelector) {
-        const commandFn = matchers[firstMatchedSelector]
-        debug(
-          'depends() executing command for selector "%s"',
-          firstMatchedSelector,
-        )
-        if (typeof commandFn === 'string') {
-          cy.log(commandFn)
-          return cy.get(firstMatchedSelector, { log: false }).then(($el) => {
-            return {
-              selector: firstMatchedSelector,
-              elements: $el,
-            }
-          })
-        } else if (Cypress._.isFunction(commandFn)) {
-          const matchedElements = $elements.filter(firstMatchedSelector)
-          return commandFn(matchedElements)
-        } else if (Cypress._.isError(commandFn)) {
-          cy.log(
-            `⚠️ Matched selector "${firstMatchedSelector}" but it is an error`,
-          ).then(() => {
-            throw commandFn
-          })
+    cy.get(combinedSelector, { log: true }).then(
+      /** @param {JQuery<HTMLElement>} $elements */
+      ($elements) => {
+        const firstMatchedSelector = Object.keys(matchers).find((selector) => {
+          return $elements.filter(selector).length > 0
+        })
+        debug('depends() matched selector', firstMatchedSelector)
+        if (firstMatchedSelector) {
+          const commandFn = matchers[firstMatchedSelector]
+          debug(
+            'depends() executing command for selector "%s"',
+            firstMatchedSelector,
+          )
+          if (typeof commandFn === 'string') {
+            cy.log(commandFn)
+            return cy.get(firstMatchedSelector, { log: false }).then(($el) => {
+              return {
+                selector: firstMatchedSelector,
+                elements: $el,
+              }
+            })
+          } else if (Cypress._.isFunction(commandFn)) {
+            const matchedElements = $elements.filter(firstMatchedSelector)
+            return commandFn(matchedElements)
+          } else if (Cypress._.isError(commandFn)) {
+            cy.log(
+              `⚠️ Matched selector "${firstMatchedSelector}" but it is an error`,
+            ).then(() => {
+              throw commandFn
+            })
+          } else {
+            throw new Error(
+              `cy.depends() command for selector "${firstMatchedSelector}" must be a string or a function`,
+            )
+          }
         } else {
           throw new Error(
-            `cy.depends() command for selector "${firstMatchedSelector}" must be a string or a function`,
+            `cy.depends() could not match any of ${$elements.length} elements to any of selectors: ${combinedSelector}`,
           )
         }
-      } else {
-        throw new Error(
-          `cy.depends() could not find any of the selectors: ${combinedSelector}`,
-        )
-      }
-    })
+      },
+    )
   })
 
   // cy.if command
