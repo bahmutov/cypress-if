@@ -67,3 +67,13 @@ describe('DOM matchers', { defaultCommandTimeout: 4_000 }, () => {
     })
   })
 })
+
+it('closes dialog if open', { viewportWidth: 800, viewportHeight: 600 }, () => {
+  cy.visit('cypress/close-dialog.html')
+  cy.depends({
+    'dialog[open]': ($dialog) => {
+      cy.wrap($dialog).find('button#close').click()
+    },
+    'dialog:hidden': 'dialog is already closed',
+  })
+})
