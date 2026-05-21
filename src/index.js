@@ -75,6 +75,12 @@ if (major < 12) {
         } else if (Cypress._.isFunction(commandFn)) {
           const matchedElements = $elements.filter(firstMatchedSelector)
           return commandFn(matchedElements)
+        } else if (Cypress._.isError(commandFn)) {
+          cy.log(
+            `⚠️ Matched selector "${firstMatchedSelector}" but it is an error`,
+          ).then(() => {
+            throw commandFn
+          })
         } else {
           throw new Error(
             `cy.depends() command for selector "${firstMatchedSelector}" must be a string or a function`,

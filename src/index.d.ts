@@ -12,7 +12,7 @@ type AssertionFn = (x: any) => void
 
 declare namespace Cypress {
   type DOMSelector = string
-  type MatchedCommandFn = string | ((elements: JQuery) => void)
+  type MatchedCommandFn = string | ((elements: JQuery) => void) | Error
 
   interface SelectorMatchers {
     [key: DOMSelector]: MatchedCommandFn

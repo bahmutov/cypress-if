@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["es6", "DOM"],
+    "lib": ["ES2025", "DOM"],
     "types": ["cypress"],
     "noEmit": true,
     "allowJs": true

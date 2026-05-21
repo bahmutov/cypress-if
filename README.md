@@ -342,6 +342,15 @@ cy.depends({
 })
 ```
 
+You can throw an error for some selectors
+
+```js
+cy.depends({
+  '#success': 'All good',
+  '#error': new Error('Something went wrong'),
+})
+```
+
 ## More examples
 
 Check out the spec files in [cypress/e2e](./cypress/e2e/) folder. If you still have a question, [open a GitHub issue](https://github.com/bahmutov/cypress-if/issues).
