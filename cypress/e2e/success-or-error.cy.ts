@@ -30,7 +30,7 @@ describe('DOM matchers', { defaultCommandTimeout: 4_000 }, () => {
       })
   })
 
-  it.only('can run commands with matched elements', () => {
+  it('can run commands with matched elements', () => {
     cy.contains('button', 'Run task').click()
     cy.depends({
       '#success': ($el) => {
@@ -45,6 +45,25 @@ describe('DOM matchers', { defaultCommandTimeout: 4_000 }, () => {
           .and.to.have.text('Task failed with an error.')
         cy.log('Error path')
       },
+    })
+  })
+
+  it('can raise an error for matched selector', () => {
+    cy.on('fail', (err) => {
+      const allowedMessages = [
+        'Task completed successfully!',
+        'Task failed with an error.',
+      ]
+      const validMessage = allowedMessages.includes(err.message)
+      if (!validMessage) {
+        throw err
+      }
+    })
+
+    cy.contains('button', 'Run task').click()
+    cy.depends({
+      '#success': new Error('Task completed successfully!'),
+      '#error': new Error('Task failed with an error.'),
     })
   })
 })
