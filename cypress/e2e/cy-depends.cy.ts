@@ -68,12 +68,45 @@ describe('DOM matchers', { defaultCommandTimeout: 4_000 }, () => {
   })
 })
 
-it('closes dialog if open', { viewportWidth: 800, viewportHeight: 600 }, () => {
-  cy.visit('cypress/close-dialog.html')
-  cy.depends({
-    'dialog[open]': ($dialog) => {
-      cy.wrap($dialog).find('button#close').click()
+describe('Use cases', () => {
+  it(
+    'closes dialog if open',
+    { viewportWidth: 800, viewportHeight: 600 },
+    () => {
+      cy.visit('cypress/close-dialog.html')
+      cy.depends({
+        'dialog[open]': ($dialog) => {
+          cy.wrap($dialog).find('button#close').click()
+        },
+        'dialog:hidden': 'dialog is already closed',
+      })
+
+      // check if the dialog is open
+      cy.depends({
+        'dialog[open]': new Error('dialog should be closed'),
+        'dialog:not([open])': 'closed dialog',
+      })
     },
-    'dialog:hidden': 'dialog is already closed',
+  )
+
+  it('does commands depending on the number of found elements', () => {
+    cy.visit('cypress/list-with-1-2-3-items.html')
+    // a way to do something depending on the last element found (3rd, 2nd, or 1st)
+    cy.depends({
+      '#fruits li:eq(2)': 'Found 3 items',
+      '#fruits li:eq(1)': 'Found 2 items',
+      '#fruits li:eq(0)': 'Found 1 item',
+    })
+
+    cy.depends({
+      '#fruits li:eq(2)': () => 3,
+      '#fruits li:eq(1)': () => 2,
+      '#fruits li:eq(0)': () => 1,
+    })
+      // confirm the length is correct
+      .should('be.oneOf', [1, 2, 3])
+      .then((n) => {
+        cy.get('#fruits li').should('have.length', n)
+      })
   })
 })
