@@ -6,6 +6,7 @@
   "types": "src/index.d.ts",
   "scripts": {
     "test": "cypress run",
+    "open": "cypress open",
     "badges": "npx -p dependency-version-badge update-badge cypress",
     "semantic-release": "semantic-release",
     "types": "tsc"
