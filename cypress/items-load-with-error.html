@@ -5,20 +5,31 @@
     <script>
       const items = ['apples', 'oranges', 'bananas']
       const ul = document.getElementById('items')
-      const errorChance = Math.random() < 0.5
-      const emptyChance = Math.random() < 0.5
+      const errorChance = Math.random() < 0
+      const emptyChance = Math.random() < 0
       if (errorChance) {
-        setTimeout(() => {
-          ul.innerHTML = '<li id="error">Failed to load items</li>'
-        }, Math.random() * 30 + 70)
+        setTimeout(
+          () => {
+            ul.innerHTML = '<li id="error">Failed to load items</li>'
+          },
+          Math.random() * 30 + 70,
+        )
       } else {
-        setTimeout(() => {
-          if (emptyChance) {
-            ul.innerHTML = '<li id="empty">No items found</li>'
-          } else {
-            ul.innerHTML = items.map(item => `<li>${item}</li>`).join('')
-          }
-        }, Math.random() * 3000 + 70)
+        if (emptyChance) {
+          setTimeout(
+            () => {
+              ul.innerHTML = '<li id="empty">No items found</li>'
+            },
+            Math.random() * 1000 + 70,
+          )
+        } else {
+          setTimeout(
+            () => {
+              ul.innerHTML = items.map((item) => `<li>${item}</li>`).join('')
+            },
+            Math.random() * 1000 + 2000,
+          )
+        }
       }
     </script>
   </body>
