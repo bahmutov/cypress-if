@@ -6,6 +6,7 @@
   "types": "src/index.d.ts",
   "scripts": {
     "test": "cypress run",
+    "open": "cypress open",
     "badges": "npx -p dependency-version-badge update-badge cypress",
     "semantic-release": "semantic-release",
     "types": "tsc"
@@ -19,8 +20,9 @@
   "author": "Gleb Bahmutov <gleb.bahmutov@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "cypress": "15.17.0",
-    "prettier": "3.8.3",
+    "cypress": "15.19.0",
+    "cypress-recurse": "^1.37.2",
+    "prettier": "3.9.6",
     "semantic-release": "^25.0.3",
     "typescript": "^6.0.3"
   },
@@ -30,5 +32,8 @@
   },
   "dependencies": {
     "debug": "^4.4.3"
+  },
+  "allowScripts": {
+    "cypress@15.19.0": true
   }
 }

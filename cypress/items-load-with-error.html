@@ -1,0 +1,36 @@
+<html>
+  <body>
+    <h1>Items load</h1>
+    <ul id="items"></ul>
+    <script>
+      const items = ['apples', 'oranges', 'bananas']
+      const ul = document.getElementById('items')
+      const errorChance = Math.random() < 0
+      const emptyChance = Math.random() < 0
+      if (errorChance) {
+        setTimeout(
+          () => {
+            ul.innerHTML = '<li id="error">Failed to load items</li>'
+          },
+          Math.random() * 30 + 70,
+        )
+      } else {
+        if (emptyChance) {
+          setTimeout(
+            () => {
+              ul.innerHTML = '<li id="empty">No items found</li>'
+            },
+            Math.random() * 1000 + 70,
+          )
+        } else {
+          setTimeout(
+            () => {
+              ul.innerHTML = items.map((item) => `<li>${item}</li>`).join('')
+            },
+            Math.random() * 1000 + 2000,
+          )
+        }
+      }
+    </script>
+  </body>
+</html>

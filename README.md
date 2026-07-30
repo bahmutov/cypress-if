@@ -7,6 +7,7 @@ Tested with `cy.get`, `cy.contains`, `cy.find`, `.then`, `.within` commands in C
 - 📝 [Conditional Commands For Cypress](https://glebbahmutov.com/blog/cypress-if/)
 - 📝 [Cypress Flakiness Examples](https://glebbahmutov.com/blog/flakiness-example/)
 - 📝 [Click Button If Enabled](https://glebbahmutov.com/blog/click-button-if-enabled/)
+- 📝 [What Needs To Retry](https://glebbahmutov.com/blog/what-needs-to-retry/)
 - 📺 [Introduction To Using cypress-if Plugin to Write Conditional Cypress Commands](https://youtu.be/TVwU0OvrVUA)
 - 📺 [Confirm Cypress Command Execution Order Using Sinon.js Spies](https://youtu.be/RTzJu44yAc8)
 - 📺 [cypress-if Plugin Supports Cypress v12+: Close The Popup Dialog If It Is Visible](https://youtu.be/PLP5Bq7KHTk)
