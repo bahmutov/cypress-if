@@ -16,18 +16,28 @@ describe('DOM matchers', { defaultCommandTimeout: 4_000 }, () => {
     })
       // yields an object with matched selector
       // and the matched elements
+      // Note: there is a "subject" property only
+      // if the executed callback returns a value
       .should('have.keys', ['selector', 'elements'])
-      .then(({ selector, elements }) => {
-        if (selector === '#success') {
-          expect(elements).to.have.length(1)
-          expect(elements[0]).to.have.text('Task completed successfully!')
-        } else if (selector === '#error') {
-          expect(elements).to.have.length(1)
-          expect(elements[0]).to.have.text('Task failed with an error.')
-        } else {
-          throw new Error(`Unexpected selector ${selector}`)
-        }
-      })
+      .then(
+        ({
+          selector,
+          elements,
+        }: {
+          selector: string
+          elements: JQuery<HTMLElement>
+        }) => {
+          if (selector === '#success') {
+            expect(elements).to.have.length(1)
+            expect(elements[0]).to.have.text('Task completed successfully!')
+          } else if (selector === '#error') {
+            expect(elements).to.have.length(1)
+            expect(elements[0]).to.have.text('Task failed with an error.')
+          } else {
+            throw new Error(`Unexpected selector ${selector}`)
+          }
+        },
+      )
   })
 
   it('can run commands with matched elements', () => {
@@ -37,13 +47,13 @@ describe('DOM matchers', { defaultCommandTimeout: 4_000 }, () => {
         expect($el, 'success')
           .to.have.length(1)
           .and.to.have.text('Task completed successfully!')
-        cy.log('Success path')
+        return cy.log('Success path')
       },
       '#error': ($el) => {
         expect($el, 'error')
           .to.have.length(1)
           .and.to.have.text('Task failed with an error.')
-        cy.log('Error path')
+        return cy.log('Error path')
       },
     })
   })
@@ -66,6 +76,26 @@ describe('DOM matchers', { defaultCommandTimeout: 4_000 }, () => {
       '#error': new Error('Task failed with an error.'),
     })
   })
+
+  it('returns the callback value', () => {
+    cy.contains('button', 'Run task').click()
+    cy.depends({
+      h1: () => 42,
+      '#error': new Error('Error!'),
+    })
+      .its('subject')
+      .should('equal', 42)
+  })
+
+  it('returns the resolved value', () => {
+    cy.contains('button', 'Run task').click()
+    cy.depends({
+      h1: () => cy.wrap(42).should('equal', 42),
+      '#error': new Error('Error!'),
+    })
+      .its('subject')
+      .should('equal', 42)
+  })
 })
 
 describe('Use cases', () => {
@@ -76,7 +106,7 @@ describe('Use cases', () => {
       cy.visit('cypress/close-dialog.html')
       cy.depends({
         'dialog[open]': ($dialog) => {
-          cy.wrap($dialog).find('button#close').click()
+          return cy.wrap($dialog).find('button#close').click()
         },
         'dialog:hidden': 'dialog is already closed',
       })
@@ -104,8 +134,9 @@ describe('Use cases', () => {
       '#fruits li:eq(0)': () => 1,
     })
       // confirm the length is correct
+      .its('subject')
       .should('be.oneOf', [1, 2, 3])
-      .then((n) => {
+      .then((n: number) => {
         cy.get('#fruits li').should('have.length', n)
       })
   })

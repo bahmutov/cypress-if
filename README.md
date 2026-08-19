@@ -331,13 +331,13 @@ cy.depends({
     expect($el, 'success')
       .to.have.length(1)
       .and.to.have.text('Task completed successfully!')
-    cy.log('Success path')
+    return cy.log('Success path')
   },
   '#error': ($el) => {
     expect($el, 'error')
       .to.have.length(1)
       .and.to.have.text('Task failed with an error.')
-    cy.log('Error path')
+    return cy.log('Error path')
   },
   '#timeout': 'Timed out',
 })
@@ -350,6 +350,26 @@ cy.depends({
   '#success': 'All good',
   '#error': new Error('Something went wrong'),
 })
+```
+
+You can return a value from the matched callback, it will be yielded under `subject` property.
+
+```js
+cy.depends({
+  '#answer': () => 42,
+})
+  .its('subject')
+  .should('equal', 42)
+```
+
+You can return a Cypress chain; its yielded value will be under the `subject` property
+
+```js
+cy.depends({
+  '#answer': () => cy.wrap(42),
+})
+  .its('subject')
+  .should('equal', 42)
 ```
 
 ## More examples

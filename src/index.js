@@ -76,7 +76,24 @@ if (major < 12) {
             })
           } else if (Cypress._.isFunction(commandFn)) {
             const matchedElements = $elements.filter(firstMatchedSelector)
-            return commandFn(matchedElements)
+            const result = commandFn(matchedElements)
+            // if the result is a Cypress chainable, we need to wait for it to resolve
+            // and then return the subject along with the selector and elements
+            if (Cypress.isCy(result)) {
+              return result.then((subject) => {
+                return {
+                  selector: firstMatchedSelector,
+                  elements: matchedElements,
+                  subject,
+                }
+              })
+            } else {
+              return {
+                selector: firstMatchedSelector,
+                elements: matchedElements,
+                subject: result,
+              }
+            }
           } else if (Cypress._.isError(commandFn)) {
             cy.log(
               `⚠️ Matched selector "${firstMatchedSelector}" but it is an error`,
