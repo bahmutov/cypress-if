@@ -47,13 +47,13 @@ describe('DOM matchers', { defaultCommandTimeout: 4_000 }, () => {
         expect($el, 'success')
           .to.have.length(1)
           .and.to.have.text('Task completed successfully!')
-        return cy.log('Success path')
+        cy.log('Success path')
       },
       '#error': ($el) => {
         expect($el, 'error')
           .to.have.length(1)
           .and.to.have.text('Task failed with an error.')
-        return cy.log('Error path')
+        cy.log('Error path')
       },
     })
   })
@@ -95,6 +95,26 @@ describe('DOM matchers', { defaultCommandTimeout: 4_000 }, () => {
     })
       .its('subject')
       .should('equal', 42)
+  })
+
+  it('runs cy commands without a return', () => {
+    cy.contains('button', 'Run task').click()
+    cy.spy(cy, 'log').as('log')
+    cy.depends({
+      h1: () => {
+        cy.log('h1 found')
+      },
+    }).should('not.have.property', 'subject')
+    cy.get('@log').should('have.been.calledWith', 'h1 found')
+  })
+
+  it('yields null value', () => {
+    cy.contains('button', 'Run task').click()
+    cy.depends({
+      h1: () => {
+        return null
+      },
+    }).should('have.property', 'subject', null)
   })
 })
 

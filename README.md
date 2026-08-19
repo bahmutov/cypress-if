@@ -331,13 +331,13 @@ cy.depends({
     expect($el, 'success')
       .to.have.length(1)
       .and.to.have.text('Task completed successfully!')
-    return cy.log('Success path')
+    cy.log('Success path')
   },
   '#error': ($el) => {
     expect($el, 'error')
       .to.have.length(1)
       .and.to.have.text('Task failed with an error.')
-    return cy.log('Error path')
+    cy.log('Error path')
   },
   '#timeout': 'Timed out',
 })
@@ -371,6 +371,8 @@ cy.depends({
   .its('subject')
   .should('equal', 42)
 ```
+
+If the callback returns or yield `undefined`, then it won't be included under the `subject` property.
 
 ## More examples
 

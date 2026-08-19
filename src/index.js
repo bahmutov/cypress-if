@@ -88,11 +88,14 @@ if (major < 12) {
                 }
               })
             } else {
-              return {
-                selector: firstMatchedSelector,
-                elements: matchedElements,
-                subject: result,
-              }
+              return cy.wrap(
+                {
+                  selector: firstMatchedSelector,
+                  elements: matchedElements,
+                  ...(result !== undefined ? { subject: result } : {}),
+                },
+                { log: false },
+              )
             }
           } else if (Cypress._.isError(commandFn)) {
             cy.log(
