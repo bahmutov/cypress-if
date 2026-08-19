@@ -356,7 +356,7 @@ Cypress.Commands.overwrite(
   },
 )
 
-Cypress.Commands.overwrite('task', function (task, args, options) {
+Cypress.Commands.overwrite('task', function (originalFn, task, args, options) {
   debug('cy.task %o', { args, options })
 
   const cmd = cy.state('current')
@@ -366,7 +366,7 @@ Cypress.Commands.overwrite('task', function (task, args, options) {
 
     if (next && next.attributes.name === 'if') {
       // disable the built-in assertion
-      return task(args, options).then(
+      return originalFn(task, args, options).then(
         (taskResult) => {
           debug('internal task result', taskResult)
           return taskResult
@@ -379,7 +379,7 @@ Cypress.Commands.overwrite('task', function (task, args, options) {
     }
   }
 
-  return task(args, options)
+  return originalFn(task, args, options)
 })
 
 Cypress.Commands.add('raise', (x) => {
@@ -388,8 +388,8 @@ Cypress.Commands.add('raise', (x) => {
   }
   const e = new Error(
     String(x) +
-      '\n' +
-      'cypress-if tip: pass an error instance to have correct stack',
+    '\n' +
+    'cypress-if tip: pass an error instance to have correct stack',
   )
   throw e
 })

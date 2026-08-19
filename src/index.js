@@ -408,7 +408,7 @@ if (major < 12) {
     return (subject) => innerFn(subject)
   })
 
-  Cypress.Commands.overwrite('task', function (task, args, options) {
+  Cypress.Commands.overwrite('task', function (originalFn, task, args, options) {
     debug('cy.task %o', { args, options })
 
     const cmd = cy.state('current')
@@ -418,7 +418,7 @@ if (major < 12) {
 
       if (isIfCommand(next)) {
         // disable the built-in assertion
-        return task(args, options).then(
+        return originalFn(task, args, options).then(
           (taskResult) => {
             debug('internal task result', taskResult)
             return taskResult
@@ -431,7 +431,7 @@ if (major < 12) {
       }
     }
 
-    return task(args, options)
+    return originalFn(task, args, options);
   })
 
   Cypress.Commands.add('raise', (x) => {
@@ -440,8 +440,8 @@ if (major < 12) {
     }
     const e = new Error(
       String(x) +
-        '\n' +
-        'cypress-if tip: pass an error instance to have correct stack',
+      '\n' +
+      'cypress-if tip: pass an error instance to have correct stack',
     )
     throw e
   })
