@@ -18,9 +18,22 @@ it('finds the li elements', () => {
 
 it('clicks on the button if it is visible', () => {
   cy.visit('cypress/index.html')
-  cy.get('button#hidden').if('visible').click()
+    .its('console')
+    .then((console) => {
+      cy.spy(console, 'log').as('log')
+    })
+
+  // since the button is hidden, the test will not click it
+  cy.get('button#hidden')
+    .if('visible')
+    .click()
+    .else('Hidden button, not clicking')
+  // so the log message will not be called
+  cy.get('@log').should('not.have.been.called')
+
   // but we can click on the visible button
-  cy.get('button#load').if('visible').click()
+  cy.get('button#load').if('visible').click().else('Visible button not clicked')
+  cy.get('@log').should('have.been.calledOnce')
 })
 
 it('works if nothing is attached', () => {
@@ -28,6 +41,6 @@ it('works if nothing is attached', () => {
   cy.wrap(1)
     .if('not.equal', 1)
     .then((/** @type number */ subject) => {
-      expect(subject).to.not.equal(1)
+      expect(subject, 'subject').to.not.equal(1)
     })
 })
